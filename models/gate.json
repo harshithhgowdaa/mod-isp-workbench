@@ -1,73 +1,74 @@
 {
-  "route_fraction": 0.95,
-  "mean_psnr": 19.484792305490046,
-  "mean_routed_percent": 96.0,
+  "route_fraction": 1.0,
+  "mean_psnr_db": 22.45267782407485,
+  "mean_routed_percent": 100.0,
   "mode": "relative_rank",
-  "checkpoint": "./models/student_metaisp2023.pt",
-  "dataset": "./data/calibration",
-  "criterion": "Minimize neural tiles while keeping calibration mean PSNR within budget of all-neural hybrid. Rank tiles by variance / (mean intensity squared + 1e-6).",
+  "checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/mod_isp.pt",
+  "dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/calibration",
+  "patch_size": 256,
+  "criterion": "Minimize selected neural tiles while keeping calibration mean PSNR within budget of the fully Learned output. Hybrid output composes selected Learned regions with the Classical output. Tiles are ranked by Bayer variance / (mean intensity squared + 1e-6).",
   "max_psnr_drop_db": 0.5,
-  "baseline_psnr_db": 19.893197803498364,
-  "warning": "Fixed budget does not guarantee quality on unseen scenes; routed tiles do not measure MACs or latency.",
+  "baseline_psnr_db": 22.45267782407485,
+  "warning": "Calibration is scene-disjoint from training but quality/speed are not guaranteed on unseen scenes; routed tile percentage is not measured MAC reduction.",
   "candidates": [
     {
       "route_fraction": 1.0,
-      "mean_psnr": 19.893197803498364,
+      "mean_psnr_db": 22.45267782407485,
       "mean_routed_percent": 100.0
     },
     {
       "route_fraction": 0.95,
-      "mean_psnr": 19.484792305490046,
+      "mean_psnr_db": 19.749627146426317,
       "mean_routed_percent": 96.0
     },
     {
       "route_fraction": 0.9,
-      "mean_psnr": 19.05180908602652,
+      "mean_psnr_db": 18.13773038390707,
       "mean_routed_percent": 92.0
     },
     {
       "route_fraction": 0.85,
-      "mean_psnr": 18.593339752048486,
+      "mean_psnr_db": 17.29905410126758,
       "mean_routed_percent": 88.0
     },
     {
       "route_fraction": 0.8,
-      "mean_psnr": 17.627043519461687,
+      "mean_psnr_db": 16.13363446586107,
       "mean_routed_percent": 80.0
     },
     {
       "route_fraction": 0.75,
-      "mean_psnr": 17.21160162133048,
+      "mean_psnr_db": 15.726946098201873,
       "mean_routed_percent": 76.0
     },
     {
       "route_fraction": 0.7,
-      "mean_psnr": 16.85132548701528,
+      "mean_psnr_db": 15.34842911015038,
       "mean_routed_percent": 72.0
     },
     {
       "route_fraction": 0.6,
-      "mean_psnr": 15.98785036745818,
+      "mean_psnr_db": 14.761773520518929,
       "mean_routed_percent": 60.0
     },
     {
       "route_fraction": 0.5,
-      "mean_psnr": 15.537767859332146,
+      "mean_psnr_db": 14.441704223555003,
       "mean_routed_percent": 52.0
     },
     {
       "route_fraction": 0.4,
-      "mean_psnr": 14.998412421264735,
+      "mean_psnr_db": 14.269023410020518,
       "mean_routed_percent": 40.0
     },
     {
       "route_fraction": 0.2,
-      "mean_psnr": 14.260364089483613,
+      "mean_psnr_db": 14.218435844845848,
       "mean_routed_percent": 20.0
     },
     {
       "route_fraction": 0.0,
-      "mean_psnr": 13.801756176496133,
+      "mean_psnr_db": 14.2346288802983,
       "mean_routed_percent": 0.0
     }
   ]

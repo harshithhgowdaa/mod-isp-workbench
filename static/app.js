@@ -7,6 +7,7 @@ let inputPreviewUrl = null;
 const image = $('#image');
 const reference = $('#reference');
 const run = $('#run');
+const demoRun = $('#demo-run');
 const rows = [...document.querySelectorAll('.method-row')];
 
 function clearOutput() {
@@ -105,7 +106,7 @@ function setMetric(id, value, suffix = '') {
 function describePath(name, output) {
   if (name === 'classical') return 'Classical baseline';
   if (data.camera_managed_raw) {
-    return name === 'hybrid' ? `Bayer reconstruction with ${output.routed}% neural tiles` : 'Learned Bayer mosaic → sRGB reconstruction';
+    return name === 'hybrid' ? `Camera RAW · ${output.routed}% sRGB tiles routed` : 'Camera RAW rendered by LibRaw, then SIDD-CC sRGB denoising';
   }
   if (data.input_type === 'rgb') {
     return name === 'hybrid' ? `RGB hybrid · ${output.routed}% routed` : 'SIDD-CC sRGB denoiser';
@@ -167,7 +168,7 @@ function render() {
   setMetric('ssim', metrics?.ssim);
   setMetric('delta-e', metrics?.delta_e);
   setMetric('lpips', metrics?.lpips);
-  $('#quality-state').textContent = metrics ? 'Reference attached' : 'Reference required';
+  $('#quality-state').textContent = data.demo ? 'Single held-out test block' : metrics ? 'Reference attached' : 'Reference required';
   $('#source-summary').textContent = `${data.input_kind} · ${data.processing_note || 'Standard pipeline'} · ${data.environment}`;
   $('#dimensions').textContent = `${data.width} × ${data.height}`;
   $('#input-meta').textContent = `${data.width} × ${data.height} · ${data.camera_managed_raw ? 'Camera RAW' : data.input_type === 'rgb' ? 'Rendered RGB' : 'Bayer sensor'}`;
@@ -179,18 +180,22 @@ function render() {
   const reuseNote = output.reused_inference
     ? ' Hybrid time and Python allocation are incremental comparison costs: selected tiles reuse Learned-path predictions, so these are not standalone Hybrid costs.'
     : '';
-  $('#measurement-note').textContent = `${describePath(view, output)}.${reuseNote} Memory excludes native and accelerator allocations. ${qualityNote}`;
+  const gateNote = output.gate
+    ? ` Hybrid routing: ${output.gate.status}.${output.gate.validation_route_percent != null ? ` On the SIDD-CC validation scene it invoked the Bayer model on ${output.gate.validation_route_percent}% of tiles (${Number(output.gate.validation_tile_call_reduction_percent).toFixed(1)}% fewer tile calls) and changed mean PSNR by ${Number(output.gate.validation_psnr_delta_db).toFixed(2)} dB versus all-Learned.` : ''}`
+    : '';
+  const demoNote = data.demo ? ` ${data.demo.note}` : '';
+  $('#measurement-note').textContent = `${describePath(view, output)}.${reuseNote}${gateNote} Memory excludes native and accelerator allocations. ${qualityNote}${demoNote}`;
   rows.forEach(row => {
     const name = row.dataset.view;
     const result = data.outputs[name];
     row.disabled = !result;
     row.setAttribute('aria-selected', String(name === view));
     row.querySelector('[data-runtime]').textContent = result ? `${result.latency_ms} ms` : 'Unavailable';
-    row.querySelector('[data-state]').textContent = result ? (name === 'classical' ? 'Baseline' : `${result.routed != null ? `${result.routed}% routed` : 'Available'}${result.reused_inference ? ' · shared tiles' : ''}`) : 'Model unavailable';
+    row.querySelector('[data-state]').textContent = result ? (name === 'classical' ? 'Baseline' : `${result.routed != null ? `${result.routed}% routed` : 'Available'}${result.reused_inference ? ' · shared tiles' : ''}${result.gate?.deployment_eligible === false ? ' · experimental' : ''}`) : 'Model unavailable';
     const description = row.querySelector('[data-description]');
-    if (description && data.input_type === 'rgb') description.textContent = name === 'hybrid' ? 'Noisy RGB tiles use the learned denoiser' : 'SIDD-CC sRGB denoising';
-    if (description && data.camera_managed_raw) description.textContent = name === 'hybrid' ? 'Demosaic fallback with variance-gated neural tiles' : 'Bayer mosaic to rendered RGB';
-    else if (description && data.input_type === 'bayer') description.textContent = name === 'hybrid' ? 'Variance-gated Bayer restoration' : 'Joint Bayer restoration';
+    if (description && (data.input_type === 'rgb' || data.camera_managed_raw)) description.textContent = name === 'hybrid' ? 'Variance-gated sRGB denoising' : 'SIDD-CC sRGB denoising';
+    if (description && data.camera_managed_raw) description.textContent = name === 'hybrid' ? 'Variance-gated sRGB denoising after LibRaw rendering' : 'LibRaw camera render + sRGB denoising';
+    else if (description && data.input_type === 'bayer') description.textContent = name === 'hybrid' ? 'RAW-statistics tile routing · experimental' : 'Joint Bayer restoration';
   });
 }
 
@@ -211,7 +216,7 @@ rows.forEach(row => row.addEventListener('keydown', event => {
   available[nextIndex].click();
 }));
 
-run.addEventListener('click', async () => {
+async function processCurrentImage() {
   if (!image.files.length) return;
   const form = new FormData();
   form.append('image', image.files[0]);
@@ -237,6 +242,36 @@ run.addEventListener('click', async () => {
     run.disabled = !image.files.length;
     run.removeAttribute('aria-busy');
     run.innerHTML = '<span>Process image</span><span aria-hidden="true">↗</span>';
+  }
+}
+
+run.addEventListener('click', processCurrentImage);
+
+demoRun.addEventListener('click', async () => {
+  demoRun.disabled = true;
+  demoRun.setAttribute('aria-busy', 'true');
+  demoRun.innerHTML = '<span>Running benchmark example</span><b aria-hidden="true">↻</b>';
+  run.disabled = true;
+  $('#error').textContent = '';
+  try {
+    const response = await fetch('/api/demo');
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Benchmark example could not be loaded.');
+    image.value = '';
+    reference.value = '';
+    $('#file-name').textContent = 'SIDD-CC test · scene 0164 · block 1';
+    $('#ref-name').textContent = 'Published aligned clean reference';
+    data = result;
+    view = result.outputs.hybrid ? 'hybrid' : 'classical';
+    render();
+    $('#comparison').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (error) {
+    $('#error').textContent = error.message;
+  } finally {
+    run.disabled = !image.files.length;
+    demoRun.disabled = false;
+    demoRun.removeAttribute('aria-busy');
+    demoRun.innerHTML = '<span>Run held-out SIDD-CC example</span><b aria-hidden="true">↗</b>';
   }
 });
 

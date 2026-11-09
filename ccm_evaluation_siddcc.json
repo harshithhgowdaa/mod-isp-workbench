@@ -1,0 +1,669 @@
+{
+  "status": "training-fit CCM; validation-only evaluation",
+  "checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/mod_isp_siddcc.pt",
+  "training_dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/train",
+  "validation_dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/validation",
+  "training_images": 166,
+  "validation_images": 36,
+  "sampled_pixels_per_training_image": 1024,
+  "ridge_to_identity": 0.05,
+  "seed": 20261107,
+  "operation": "linearize learned sRGB; apply fitted 3x3 matrix; encode sRGB",
+  "metrics": {
+    "before": {
+      "psnr": 20.33888888888889,
+      "ssim": 0.7289916666666667,
+      "delta_e": 12.379722222222222,
+      "lpips": 0.3462361111111111
+    },
+    "after": {
+      "psnr": 20.68,
+      "ssim": 0.7420527777777778,
+      "delta_e": 11.7375,
+      "lpips": 0.35600833333333337
+    }
+  },
+  "metric_delta_after_minus_before": {
+    "psnr": 0.34111111111111114,
+    "ssim": 0.013061111111111079,
+    "delta_e": -0.6422222222222214,
+    "lpips": 0.009772222222222293
+  },
+  "per_image": [
+    {
+      "image": "0001_NOISY_RAW_034.MAT",
+      "before": {
+        "psnr": 24.42,
+        "ssim": 0.8744,
+        "delta_e": 10.32,
+        "lpips": 0.24,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.88,
+        "ssim": 0.8755,
+        "delta_e": 8.88,
+        "lpips": 0.2364,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0001_NOISY_RAW_145.MAT",
+      "before": {
+        "psnr": 24.5,
+        "ssim": 0.8771,
+        "delta_e": 10.14,
+        "lpips": 0.2469,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.98,
+        "ssim": 0.8782,
+        "delta_e": 8.76,
+        "lpips": 0.2457,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0002_NOISY_RAW_014.MAT",
+      "before": {
+        "psnr": 20.7,
+        "ssim": 0.7668,
+        "delta_e": 12.04,
+        "lpips": 0.3398,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.22,
+        "ssim": 0.7766,
+        "delta_e": 10.82,
+        "lpips": 0.35,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0002_NOISY_RAW_023.MAT",
+      "before": {
+        "psnr": 20.68,
+        "ssim": 0.7641,
+        "delta_e": 12.05,
+        "lpips": 0.3353,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.2,
+        "ssim": 0.7738,
+        "delta_e": 10.83,
+        "lpips": 0.3443,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0003_NOISY_RAW_060.MAT",
+      "before": {
+        "psnr": 16.36,
+        "ssim": 0.5512,
+        "delta_e": 13.74,
+        "lpips": 0.4174,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 16.54,
+        "ssim": 0.5857,
+        "delta_e": 12.83,
+        "lpips": 0.44,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0003_NOISY_RAW_139.MAT",
+      "before": {
+        "psnr": 16.35,
+        "ssim": 0.5517,
+        "delta_e": 13.75,
+        "lpips": 0.4172,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 16.54,
+        "ssim": 0.5859,
+        "delta_e": 12.83,
+        "lpips": 0.4418,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0004_NOISY_RAW_060.MAT",
+      "before": {
+        "psnr": 24.08,
+        "ssim": 0.851,
+        "delta_e": 11.94,
+        "lpips": 0.2943,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.45,
+        "ssim": 0.8489,
+        "delta_e": 10.99,
+        "lpips": 0.2988,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0004_NOISY_RAW_077.MAT",
+      "before": {
+        "psnr": 24.09,
+        "ssim": 0.8529,
+        "delta_e": 11.93,
+        "lpips": 0.2922,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.46,
+        "ssim": 0.8509,
+        "delta_e": 10.98,
+        "lpips": 0.2986,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0005_NOISY_RAW_065.MAT",
+      "before": {
+        "psnr": 18.33,
+        "ssim": 0.6424,
+        "delta_e": 13.47,
+        "lpips": 0.3905,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 18.67,
+        "ssim": 0.6688,
+        "delta_e": 13.1,
+        "lpips": 0.3999,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0005_NOISY_RAW_091.MAT",
+      "before": {
+        "psnr": 18.39,
+        "ssim": 0.6492,
+        "delta_e": 13.45,
+        "lpips": 0.3989,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 18.73,
+        "ssim": 0.6758,
+        "delta_e": 13.12,
+        "lpips": 0.413,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0006_NOISY_RAW_020.MAT",
+      "before": {
+        "psnr": 18.1,
+        "ssim": 0.5549,
+        "delta_e": 12.74,
+        "lpips": 0.4297,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 18.64,
+        "ssim": 0.55,
+        "delta_e": 11.99,
+        "lpips": 0.4663,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0006_NOISY_RAW_146.MAT",
+      "before": {
+        "psnr": 18.11,
+        "ssim": 0.5544,
+        "delta_e": 12.66,
+        "lpips": 0.4269,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 18.66,
+        "ssim": 0.5504,
+        "delta_e": 11.91,
+        "lpips": 0.463,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0008_NOISY_RAW_058.MAT",
+      "before": {
+        "psnr": 18.97,
+        "ssim": 0.6962,
+        "delta_e": 12.99,
+        "lpips": 0.375,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.02,
+        "ssim": 0.7113,
+        "delta_e": 13.41,
+        "lpips": 0.3979,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0008_NOISY_RAW_094.MAT",
+      "before": {
+        "psnr": 18.97,
+        "ssim": 0.6971,
+        "delta_e": 12.97,
+        "lpips": 0.3734,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.03,
+        "ssim": 0.712,
+        "delta_e": 13.4,
+        "lpips": 0.3961,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0010_NOISY_RAW_008.MAT",
+      "before": {
+        "psnr": 19.61,
+        "ssim": 0.6768,
+        "delta_e": 12.97,
+        "lpips": 0.3561,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.81,
+        "ssim": 0.7077,
+        "delta_e": 12.66,
+        "lpips": 0.374,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0010_NOISY_RAW_146.MAT",
+      "before": {
+        "psnr": 19.58,
+        "ssim": 0.6727,
+        "delta_e": 13.0,
+        "lpips": 0.3513,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.78,
+        "ssim": 0.7021,
+        "delta_e": 12.63,
+        "lpips": 0.3676,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0012_NOISY_RAW_068.MAT",
+      "before": {
+        "psnr": 19.05,
+        "ssim": 0.6856,
+        "delta_e": 13.17,
+        "lpips": 0.3735,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.12,
+        "ssim": 0.7024,
+        "delta_e": 13.48,
+        "lpips": 0.395,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0012_NOISY_RAW_121.MAT",
+      "before": {
+        "psnr": 19.04,
+        "ssim": 0.6867,
+        "delta_e": 13.19,
+        "lpips": 0.3711,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 19.11,
+        "ssim": 0.7038,
+        "delta_e": 13.49,
+        "lpips": 0.3922,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0017_NOISY_RAW_106.MAT",
+      "before": {
+        "psnr": 16.69,
+        "ssim": 0.5563,
+        "delta_e": 14.51,
+        "lpips": 0.4183,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 16.9,
+        "ssim": 0.6013,
+        "delta_e": 13.9,
+        "lpips": 0.4389,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0017_NOISY_RAW_133.MAT",
+      "before": {
+        "psnr": 16.69,
+        "ssim": 0.557,
+        "delta_e": 14.5,
+        "lpips": 0.4178,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 16.9,
+        "ssim": 0.6023,
+        "delta_e": 13.88,
+        "lpips": 0.4396,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0018_NOISY_RAW_031.MAT",
+      "before": {
+        "psnr": 24.98,
+        "ssim": 0.8636,
+        "delta_e": 9.41,
+        "lpips": 0.2619,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 25.3,
+        "ssim": 0.8628,
+        "delta_e": 9.09,
+        "lpips": 0.2581,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0018_NOISY_RAW_046.MAT",
+      "before": {
+        "psnr": 24.98,
+        "ssim": 0.864,
+        "delta_e": 9.41,
+        "lpips": 0.2658,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 25.3,
+        "ssim": 0.8633,
+        "delta_e": 9.1,
+        "lpips": 0.264,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0019_NOISY_RAW_011.MAT",
+      "before": {
+        "psnr": 22.73,
+        "ssim": 0.8203,
+        "delta_e": 10.76,
+        "lpips": 0.3091,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 23.09,
+        "ssim": 0.8193,
+        "delta_e": 9.88,
+        "lpips": 0.3005,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0019_NOISY_RAW_133.MAT",
+      "before": {
+        "psnr": 22.73,
+        "ssim": 0.8237,
+        "delta_e": 10.74,
+        "lpips": 0.3063,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 23.1,
+        "ssim": 0.8227,
+        "delta_e": 9.85,
+        "lpips": 0.2987,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0022_NOISY_RAW_035.MAT",
+      "before": {
+        "psnr": 16.86,
+        "ssim": 0.553,
+        "delta_e": 14.92,
+        "lpips": 0.4745,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 17.08,
+        "ssim": 0.5853,
+        "delta_e": 14.97,
+        "lpips": 0.498,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0022_NOISY_RAW_062.MAT",
+      "before": {
+        "psnr": 16.9,
+        "ssim": 0.5547,
+        "delta_e": 14.89,
+        "lpips": 0.4713,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 17.12,
+        "ssim": 0.5867,
+        "delta_e": 14.93,
+        "lpips": 0.4953,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0025_NOISY_RAW_003.MAT",
+      "before": {
+        "psnr": 21.74,
+        "ssim": 0.8366,
+        "delta_e": 10.68,
+        "lpips": 0.3045,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.99,
+        "ssim": 0.8343,
+        "delta_e": 9.91,
+        "lpips": 0.3123,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0025_NOISY_RAW_096.MAT",
+      "before": {
+        "psnr": 21.75,
+        "ssim": 0.8317,
+        "delta_e": 10.69,
+        "lpips": 0.3108,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 22.0,
+        "ssim": 0.8293,
+        "delta_e": 9.92,
+        "lpips": 0.311,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0028_NOISY_RAW_028.MAT",
+      "before": {
+        "psnr": 21.4,
+        "ssim": 0.838,
+        "delta_e": 12.31,
+        "lpips": 0.2644,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.92,
+        "ssim": 0.8433,
+        "delta_e": 10.73,
+        "lpips": 0.2518,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0028_NOISY_RAW_033.MAT",
+      "before": {
+        "psnr": 21.4,
+        "ssim": 0.8381,
+        "delta_e": 12.31,
+        "lpips": 0.2643,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.92,
+        "ssim": 0.8436,
+        "delta_e": 10.74,
+        "lpips": 0.2518,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0030_NOISY_RAW_074.MAT",
+      "before": {
+        "psnr": 16.85,
+        "ssim": 0.6437,
+        "delta_e": 14.55,
+        "lpips": 0.4052,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 17.3,
+        "ssim": 0.67,
+        "delta_e": 14.03,
+        "lpips": 0.4143,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0030_NOISY_RAW_138.MAT",
+      "before": {
+        "psnr": 16.85,
+        "ssim": 0.6426,
+        "delta_e": 14.56,
+        "lpips": 0.4067,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 17.3,
+        "ssim": 0.669,
+        "delta_e": 14.03,
+        "lpips": 0.4146,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0032_NOISY_RAW_019.MAT",
+      "before": {
+        "psnr": 21.49,
+        "ssim": 0.8388,
+        "delta_e": 11.79,
+        "lpips": 0.3103,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.98,
+        "ssim": 0.8387,
+        "delta_e": 11.06,
+        "lpips": 0.3145,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0032_NOISY_RAW_054.MAT",
+      "before": {
+        "psnr": 21.49,
+        "ssim": 0.8386,
+        "delta_e": 11.8,
+        "lpips": 0.3115,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 21.98,
+        "ssim": 0.8386,
+        "delta_e": 11.05,
+        "lpips": 0.3168,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0033_NOISY_RAW_042.MAT",
+      "before": {
+        "psnr": 23.72,
+        "ssim": 0.8748,
+        "delta_e": 10.67,
+        "lpips": 0.2701,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.27,
+        "ssim": 0.8775,
+        "delta_e": 9.75,
+        "lpips": 0.2604,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    },
+    {
+      "image": "0033_NOISY_RAW_146.MAT",
+      "before": {
+        "psnr": 23.62,
+        "ssim": 0.863,
+        "delta_e": 10.65,
+        "lpips": 0.2622,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      },
+      "after": {
+        "psnr": 24.19,
+        "ssim": 0.8661,
+        "delta_e": 9.62,
+        "lpips": 0.2551,
+        "lpips_method": "256px non-overlapping tiles; area-weighted mean"
+      }
+    }
+  ],
+  "limitations": [
+    "One validation physical scene; checkpoint was previously selected using its center-crop loss.",
+    "This is a post-restoration color calibration experiment, not camera sensor calibration.",
+    "Do not deploy unless all quality metrics and additional scene/camera tests support it."
+  ],
+  "matrix_applied_on_right_to_linear_rgb_row_vector": [
+    [
+      1.2091127570364428,
+      0.2004312101400156,
+      0.043172727137931244
+    ],
+    [
+      0.32222375420623783,
+      0.3392943685489892,
+      0.2499592693304306
+    ],
+    [
+      -0.5359213249930286,
+      0.4405475608097366,
+      0.6356744007467884
+    ]
+  ],
+  "validation_use_note": "Exploratory only: one physical validation scene; this scene informed checkpoint selection. The alpha sweep was inspected after scoring. No alpha or matrix is enabled in the app."
+}

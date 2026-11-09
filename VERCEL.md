@@ -1,19 +1,23 @@
-# Vercel deployment
+# Vercel workbench
 
-The Vercel project serves the MOD-ISP interface as a static project page. The full image-processing workbench remains a local or Docker application.
+The public page combines a measured SIDD-CC sRGB benchmark comparison with browser-side inference for a judge's unseen rendered-RGB image. JPEG, PNG, and WebP image pixels stay in the browser. The static site uses a fixed-tile ONNX export of the fine-tuned sRGB NAFNet with ONNX Runtime Web/WASM. It does not send uploads to a server.
 
-## Why inference is not hosted on Vercel
+This public path is limited to sRGB. Images above 1024 px on the long edge are reduced before processing. Camera RAW and normalized Bayer NPY remain available through the local Python app. The Hosted Classical path applies exposure/tone mapping, a lightweight bilateral filter, and sharpening. Learned uses the sRGB NAFNet plus the local RGB tone finish. Hybrid blends the two by tile-level high-pass score after the full Learned path has run; this is a visual hybrid comparison and does not save compute. PSNR, SSIM, Delta E, and LPIPS are shown only for the aligned benchmark sample because arbitrary uploads have no ground truth.
 
-- Flask is deployed as one Vercel Function, and the current Python runtime bundle limit is 500 MB. The available PyTorch package in the project's local environment occupies 626 MB before NumPy, SciPy, image libraries, and application code.
-- Vercel Functions have a 4.5 MB request and response body limit. The local app accepts 30 MB and returns the input plus three base64-encoded image outputs; a recorded 16 MP comparison response was 13.7 MB.
-- The local interface promises that image processing stays on the user's machine. A hosted inference path would change where private image data is processed.
+## Build
 
-The static Vercel page points visitors to the repository's setup instructions and does not accept uploads. To run inference, follow the [local setup](README.md#quick-start) or [Docker setup](README.md#docker-runtime).
+The fixed example assets are derived from the held-out SIDD-CC test block at static/demo/. Regenerate the comparison and the browser model from the trained checkpoint:
 
-## Project configuration
+```sh
+.venv312/bin/python scripts/build_static_showcase_assets.py
+.venv312/bin/python export_srgb_onnx.py --out static/showcase/nafnet-srgb.onnx
+python3 scripts/build_vercel_site.py
+```
 
-`vercel.json` builds a static output directory from `templates/index.html` and `static/` using `scripts/build_vercel_site.py`. The `.vercelignore` file excludes local datasets, virtual environments, and scratch files.
+The exporter requires PyTorch, the ONNX package, the checkpoint, and the pinned Samsung NAFNet source under third_party/modular_neural_isp. The ONNX Runtime Web 1.31.1 WASM files are vendored under static/vendor/ort with their MIT license. The adapted model's upstream CC BY-NC-SA 4.0 terms and provenance are published in static/showcase/MODEL-NOTICE.md and MODEL-LICENSE.md.
 
-The current Vercel project is not connected to GitHub because this Vercel account does not have a GitHub Login Connection. Pushes to GitHub therefore do not deploy automatically. After updating the interface, run `scripts/deploy_vercel_static.sh` with the Vercel CLI authenticated to the project team. The script rebuilds `dist/` and uploads only those static files, without Git commit metadata or the Python training dependencies.
+The fixed sample is one 256×256 aligned test block (scene 0164, block 1 of 928). Its per-path scores are measured after the local workbench finishing path. The separate 928-block aggregate belongs to the sRGB denoiser evaluation; neither result is a Bayer RAW score. See static/demo/README.md for sample provenance.
 
-References: [Vercel Flask](https://vercel.com/docs/frameworks/backend/flask), [Python runtime bundle limits](https://vercel.com/docs/functions/runtimes/python), and [Vercel Function limits](https://vercel.com/docs/functions/limitations).
+## Deployment
+
+`vercel.json` serves dist/ as a static site. scripts/build_vercel_site.py checks for the example data, ONNX model, browser runtime, and license files. The production alias is [mod-isp-workbench.vercel.app](https://mod-isp-workbench.vercel.app/). The browser inference update was deployed on 2026-11-08. Production HTML, ONNX, WASM, and license assets returned HTTP 200, and a generated 384×256 JPEG processed to all three paths in 1.42 s on the development workstation's in-app browser (first model use; not a phone benchmark). A 390px responsive viewport had no horizontal overflow. The site code uses only static model/runtime GETs; no image upload endpoint is configured.

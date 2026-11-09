@@ -1,0 +1,78 @@
+{
+  "task": "SIDD-CC sRGB robustness sweep with synthetic held-out corruptions",
+  "dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_srgb",
+  "checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/sidd_srgb_nafnet_lite.pt",
+  "architecture_config": {
+    "width": 4,
+    "encoder_block_nums": [
+      2,
+      2,
+      4,
+      8
+    ],
+    "middle_block_num": 4,
+    "decoder_block_nums": [
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "device": "mps",
+  "environment": "macOS-15.7.7-arm64-arm-64bit",
+  "seed": 20261107,
+  "batch_size": 4,
+  "note": "All corruptions are deterministic synthetic transforms of the untouched published noisy test blocks. Results describe sRGB denoising, not RAW Bayer ISP or real-world degradation. The test set was not used for training, calibration, or checkpoint selection.",
+  "results": {
+    "published_noisy": {
+      "mean_input_psnr_db": 26.118888275379838,
+      "mean_model_psnr_db": 33.75522739388762,
+      "mean_psnr_recovery_db": 7.636339118507786,
+      "median_psnr_recovery_db": 7.85561376199389,
+      "mean_input_ssim": 0.4250605697261876,
+      "mean_model_ssim": 0.7757492876162047,
+      "mean_ssim_recovery": 0.350688717890017,
+      "blocks": 928
+    },
+    "additional_gaussian_sigma_0.02": {
+      "mean_input_psnr_db": 25.398476919845077,
+      "mean_model_psnr_db": 32.697205599007866,
+      "mean_psnr_recovery_db": 7.2987286791627906,
+      "median_psnr_recovery_db": 7.53582906957009,
+      "mean_input_ssim": 0.37404678375781353,
+      "mean_model_ssim": 0.7365069305042511,
+      "mean_ssim_recovery": 0.3624601467464376,
+      "blocks": 928
+    },
+    "additional_gaussian_sigma_0.05": {
+      "mean_input_psnr_db": 23.002887266248464,
+      "mean_model_psnr_db": 28.686252036477452,
+      "mean_psnr_recovery_db": 5.683364770228988,
+      "median_psnr_recovery_db": 5.897693393574707,
+      "mean_input_ssim": 0.2403941353750897,
+      "mean_model_ssim": 0.534139045771083,
+      "mean_ssim_recovery": 0.29374491039599326,
+      "blocks": 928
+    },
+    "underexposure_0.5x": {
+      "mean_input_psnr_db": 17.063285866732613,
+      "mean_model_psnr_db": 17.46162520673805,
+      "mean_psnr_recovery_db": 0.39833934000543403,
+      "median_psnr_recovery_db": 0.15189377414764316,
+      "mean_input_ssim": 0.5196055771365505,
+      "mean_model_ssim": 0.6909757883705455,
+      "mean_ssim_recovery": 0.1713702112339951,
+      "blocks": 928
+    },
+    "jpeg_quality_30": {
+      "mean_input_psnr_db": 31.12722422899282,
+      "mean_model_psnr_db": 30.5996377363476,
+      "mean_psnr_recovery_db": -0.5275864926452244,
+      "median_psnr_recovery_db": -0.26002220390306263,
+      "mean_input_ssim": 0.7024780079433374,
+      "mean_model_ssim": 0.7106551318268838,
+      "mean_ssim_recovery": 0.008177123883546427,
+      "blocks": 928
+    }
+  }
+}

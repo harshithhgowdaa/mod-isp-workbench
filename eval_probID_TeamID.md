@@ -1,83 +1,104 @@
-# Comparative Evaluation — `probID` / `TeamID`
+# Comparative evaluation — Problem P2 / Team ID pending
 
-> **Filename note:** The contest/problem ID and team ID were not present in the workspace. This requested filename is retained as a template; replace `probID` and `TeamID` when those identifiers are known. No identity is inferred.
+> The blueprint identifies Problem P2. The assigned Team ID is not available in the workspace, so the report filename remains `eval_probID_TeamID.md` until it is known.
 
 ## Summary
 
-MOD-ISP contains separate sRGB denoising and Bayer-to-RGB experiments. Their data domains and evaluation sets differ, so they are reported in separate tables. Results below are measurements from the checked-in run artifacts, not newly run experiments.
+MOD-ISP has separate Bayer RAW-to-sRGB and rendered-sRGB denoising models. Their metrics are reported separately. Results below come from local run artifacts; they are not official leaderboard scores or projected blueprint targets.
 
-## Bayer RAW / RGGB paths
+## Dataset use and split
 
-Four held-out patches from one source capture, evaluated on macOS 15.7.7 arm64. The calibration crops came from the training capture. This is a small scene-separated smoke test, not a broad benchmark.
+All 230 SIDD-CC pairs in each modality are accounted for, but validation/calibration data are not used for gradient updates.
 
-| Pipeline | PSNR ↑ dB | SSIM ↑ | Delta E 2000 ↓ | LPIPS ↓ | Recorded latency ms |
-|---|---:|---:|---:|---:|---:|
-| Classical | 10.355 | 0.5483 | 29.1825 | 0.2853 | 17.83 |
-| Learned (`models/mod_isp.pt`) | 12.095 | 0.4042 | 28.9325 | 0.7248 | 23.93 |
-| Hybrid (`models/mod_isp.pt`) | 12.005 | 0.2722 | 27.4000 | 0.8068 | 43.21 |
-| 2023 MetaISP teacher, reference only | 17.630 | 0.6939 | 13.6800 | 0.1884 | 234.18 |
+The current Bayer model uses three distinct random 128×128 crops per training pair per epoch for five epochs (2,490 optimizer steps); five deterministic center/corner crops per validation pair select the checkpoint. The sRGB model uses one random 256×256 crop per pair per epoch for 10 epochs. Thus every training pair is visited, but most source pixels are not sampled. See the [readiness audit](docs/hackathon-readiness-audit.md) for the full rubric gap analysis and dataset provenance.
 
-The learned student improves mean PSNR over Classical by 1.74 dB but reduces mean SSIM by 0.1441 and worsens LPIPS by 0.4395. Hybrid has a slightly lower mean Delta E and similar PSNR to Learned, but lower SSIM and higher LPIPS. Results are mixed across quality dimensions; no overall quality winner is claimed. The teacher is a different model and context path, and is not a controlled student ablation.
+| Modality | Training | Validation | Calibration | Test |
+|---|---|---|---|---|
+| Bayer RAW→sRGB | 166 pairs, eight physical scenes | 36 pairs, one held-out scene | 28 pairs, a separate scene | Not scored on official RAW test MATs because matching per-capture metadata is absent |
+| Rendered sRGB | 194 pairs, nine physical scenes | 36 pairs, one held-out scene | — | 928 untouched SIDD-CC blocks |
 
-## sRGB denoising comparison
+The full SIDD training collection and Samsung S24, Zurich, and MIT-Adobe5K datasets were not used. Samsung generic-lite NAFNet weights initialized the separate sRGB denoiser. The Bayer student started from the previously MetaISP-2023-distilled checkpoint and received five epochs of multi-crop supervised SIDD-CC fine-tuning.
 
-SIDD-CC sRGB test split, 928 blocks. This is a different model and task from the Bayer experiment. Metrics are mean block values; this is not official leaderboard scoring.
+## Bayer RAW-to-sRGB comparison
+
+36 scene-disjoint validation captures; results are reported both on 256×256 center crops and full frames. Center-crop validation loss informed checkpoint selection, so neither presentation is an untouched test.
+
+Full-frame means across captures (LPIPS is an area-weighted average over reflected 256×256 tiles):
+
+| Path | PSNR ↑ dB | SSIM ↑ | Delta E 2000 ↓ | Tiled LPIPS ↓ |
+|---|---:|---:|---:|---:|
+| Classical | 17.460 | 0.5961 | 14.835 | 0.3650 |
+| Learned | 27.105 | 0.8966 | 8.054 | 0.2250 |
+| Hybrid with calibrated gate | 27.105 | 0.8966 | 8.054 | 0.2250 |
+
+Learned beats Classical on 34/36 PSNR, 30/36 SSIM, 30/36 Delta E, and 23/36 tiled LPIPS comparisons. The current full-frame report is `evaluation_siddcc_bayer_multicrop_full.json`; per-image regressions and camera-family details are in `docs/failure-case-analysis.md`. On this small one-scene split, N6 improves PSNR/SSIM but regresses Delta E/LPIPS (n=2). Hybrid routes 100% to neural and provides no measured compute savings.
+
+The center-crop means below are retained as a separate checkpoint-selection diagnostic:
+
+| Path | PSNR ↑ dB | SSIM ↑ | Delta E 2000 ↓ | LPIPS ↓ |
+|---|---:|---:|---:|---:|
+| Classical | 15.693 | 0.6037 | 14.843 | 0.2478 |
+| Learned | 23.813 | 0.8393 | 9.663 | 0.2584 |
+| Hybrid calibrated | 23.813 | 0.8393 | 9.663 | 0.2584 |
+
+Against the previous Learned checkpoint on these identical center crops, the current model wins 34/36 PSNR, 36/36 SSIM, 34/36 Delta E, and 36/36 LPIPS comparisons. It has 29,980 parameters and a 126,637-byte checkpoint. The full-frame result has a different LPIPS protocol and is reported above; both come from one validation scene used for checkpoint selection and do not establish multi-camera generalization.
+
+An exploratory linear-RGB 3×3 color-matrix fit used 1,024 sampled pixels per each of the 166 Bayer training pairs. On the same 36 center-crop validation captures, the full matrix changed mean PSNR/SSIM/Delta E/tiled LPIPS from 20.339/0.7290/12.380/0.3462 to 20.680/0.7421/11.738/0.3560. Three metrics improve and LPIPS regresses. An interpolation sweep shows the tradeoff persists, and this validation scene previously informed model selection. The matrix is not deployed and is not an independent camera-calibration result. See `ccm_evaluation_siddcc.json` and `ccm_strength_sweep_siddcc.json`.
+
+## Gate quality/compute check
+
+Calibration used 28 pairs from a separate physical scene and allowed at most 0.5 dB mean PSNR loss against fully learned output. With the current checkpoint, the selected route fraction is 100%. On all 36 held-out pairs, the gate also routed 100% of tiles. Mean paired PSNR change was 0 dB; warm latency was 50.45 ms all-neural versus 48.54 ms calibrated per 256-pixel crop, within timing noise. Routing 95% already loses 2.70 dB on calibration. The variance gate does **not** reduce computation under this quality budget.
+
+A RAW-statistics tile gate was also calibrated separately. It routed 30.0% of tiles to Learned with a 0.481 dB calibration PSNR drop, but on validation it routed 24.78% and lost 4.442 dB PSNR, 0.0736 SSIM, and 1.686 Delta E against all-Learned. It is explicitly marked ineligible and is not deployed. See `tile_gate_evaluation.json`.
+
+## Rendered-sRGB benchmark
+
+SIDD-CC benchmark split, all 928 blocks. Mean block scores:
 
 | Input/model | PSNR ↑ dB | SSIM ↑ |
 |---|---:|---:|
-| Noisy input | 26.1189 | 0.4251 |
-| Samsung generic-lite initialization | 29.3029 | 0.5738 |
-| Fine-tuned SIDD-CC sRGB model | 33.7765 | 0.7762 |
+| Noisy input | 26.119 | 0.4251 |
+| Samsung generic-lite initialization | 29.303 | 0.5738 |
+| Fine-tuned sRGB model | 33.755 | 0.7757 |
 
-The fine-tuned model is +4.4736 dB PSNR and +0.2024 SSIM over the initialized checkpoint on this split. These values should not be presented as Bayer RAW results or as independent multi-camera performance.
+The model uses 245,223 parameters and a 1.17 MB checkpoint. The strict validation split is physical-scene-disjoint: 194 train pairs and 36 validation pairs; epoch 10 was selected. The official test blocks were not used in training or selection. This is rendered-sRGB denoising, not Bayer RAW ISP performance.
 
-## Bayer gate ablation
+### Held-out sRGB stress sweep
 
-The gate was calibrated using a 0.5 dB mean PSNR-drop budget on same-capture calibration crops. On four held-out patches it routed 96% of tiles. Comparison against the all-neural hybrid path:
+The same 928 clean references were used for deterministic synthetic perturbations to noisy test inputs:
 
-| Statistic | Result |
-|---|---:|
-| Mean PSNR change | −0.2336 dB |
-| Worst patch PSNR change | −0.5516 dB |
-| Mean routed fraction | 96% |
-| All-neural median warm CPU time | 40.752 ms |
-| Calibrated-gate median warm CPU time | 40.401 ms |
-| Difference | −0.351 ms (−0.86%) |
+| Input condition | Input PSNR | Model PSNR | Recovery | Input SSIM | Model SSIM |
+|---|---:|---:|---:|---:|---:|
+| Published noisy | 26.119 | 33.755 | +7.636 dB | 0.4251 | 0.7757 |
+| Additional Gaussian σ=0.02 | 25.398 | 32.697 | +7.299 dB | 0.3740 | 0.7365 |
+| Additional Gaussian σ=0.05 | 23.003 | 28.686 | +5.683 dB | 0.2404 | 0.5341 |
+| 0.5× underexposure | 17.063 | 17.462 | +0.398 dB | 0.5196 | 0.6910 |
+| JPEG quality 30 | 31.127 | 30.600 | −0.528 dB | 0.7025 | 0.7107 |
 
-This small timing delta is not evidence of a reliable speedup. Routed-tile percentage is not MAC reduction, and this is not mobile/NPU timing.
+These are synthetic sRGB stress tests, not real-camera RAW or arbitrary blur claims. JPEG artifacts regress in PSNR.
 
-## LiteRT INT8 equivalence check
+## INT8 LiteRT
 
-Eight held-out tiles were compared against PyTorch float32 on CPU. Mean absolute error was 0.01737, and input clipping was 0% on the sample. One tile (`test_002`, `[0,0]`) had mean absolute error 0.10122 and maximum error 1.30722; the other seven tiles had mean errors between 0.00503 and 0.00614. The outlier makes the overall mean an incomplete summary. No mobile delegate or NPU was tested.
+The current 47.1 KB export contains the Bayer tile network only. Representative data comprise 256 spatially distributed tiles from all 28 calibration captures, with calibrated input range −0.147 to 1.323. On 72 held-out tiles, output MAE mean/median/p95 are 0.00625 / 0.00302 / 0.01211, with maximum tile MAE 0.05284 and mean input clipping 0.00044%. Median/p95 CPU inference is 0.315/0.345 ms per 56×56 tile. The export excludes the gate, RGB model, LibRaw, tone/color finishing, and CNILUT. No phone or mobile NPU was available; these CPU figures do not show NPU compatibility or speedup.
 
-## Failure cases
+## Rubric readiness and limits
 
-| Patch | Path | PSNR dB | SSIM | Delta E | LPIPS | Observation |
-|---|---|---:|---:|---:|---:|---|
-| `test_001` | Classical | 9.67 | 0.5731 | 34.36 | 0.4298 | Reference baseline |
-| `test_001` | Learned | 9.73 | 0.1631 | 38.19 | 0.9002 | Small PSNR gain with strong SSIM/LPIPS regression |
-| `test_001` | Hybrid | 9.89 | 0.0996 | 33.99 | 1.0113 | PSNR/Delta E improve slightly; perceptual metrics worsen |
-| `test_003` | Classical | 10.60 | 0.5497 | 29.52 | 0.1939 | Reference baseline |
-| `test_003` | Learned | 10.10 | 0.3677 | 35.61 | 0.7292 | Worse on all listed quality metrics |
-| `test_003` | Hybrid | 10.85 | 0.2486 | 29.07 | 0.7557 | Better PSNR/Delta E; worse SSIM/LPIPS |
-| `test_002` | Classical | 9.77 | 0.6180 | 27.07 | 0.1918 | Reference baseline |
-| `test_002` | Learned | 13.10 | 0.5054 | 19.76 | 0.6613 | PSNR/Delta E improve, LPIPS regresses substantially |
-| `test_002` | Hybrid | 12.87 | 0.3539 | 22.62 | 0.6965 | Similar metric disagreement |
+- Evaluation results are measured, but the strong 928-block score is a separate sRGB task; Bayer evaluation is limited to one validation scene with camera-family and per-image regressions.
+- Core local flows and bad-input responses work. The app is not deployed at the public URL required by the screenshot's top UI/UX band. A 4030×3022 iPhone SE DNG API request took 13.86 seconds, above its ~10-second response target; see `raw_dng_verification.json`.
+- The README, architecture diagram, model design, ablation, failure-case, and readiness audit reflect current paths and evidence.
+- The supplied screenshots show five visible criteria whose maxima total 100. The prose says Demo/Viva (25) plus five other criteria, while only four other rows are visible; displayed top-band ranges also conflict with several row maxima. No precise score can be inferred, and relative rank remains unknown.
 
-## Setup and limitations
+## Artifacts
 
-- The Bayer student has 29,980 parameters and was trained for 320 optimizer steps on 40 crops from one source capture.
-- Calibration used eight crops from that same training capture; held-out evaluation used four crops from one other capture.
-- Bayer and sRGB models use different input domains and training/evaluation sets.
-- LPIPS may be null when its dependency or weights are unavailable; values above are the recorded run values.
-- Process timing and memory are machine-specific; reported values are not phone measurements.
-- A broad multi-scene/camera benchmark and statistical significance analysis have not been performed.
-
-## Source artifacts
-
-- `evaluation.json`
-- `student_metaisp2023_evaluation.json`
-- `teacher2023_evaluation.json`
-- `student_metaisp2023_gate_validation.json`
-- `student_metaisp2023_litert_verification.json`
+- `docs/hackathon-readiness-audit.md`
+- `docs/ablation-study.md`
+- `docs/failure-case-analysis.md`
+- `evaluation_siddcc_bayer.json`
+- `evaluation_siddcc_bayer_multicrop_full.json`
+- `evaluation_siddcc_bayer_mps_smoke.json`
+- `tile_gate_evaluation.json`
+- `raw_dng_verification.json`
+- `gate_validation_siddcc.json`
 - `models/sidd_srgb_nafnet_lite.json`
+- `robustness_srgb.json`
+- `litert_verification_multicrop.json`

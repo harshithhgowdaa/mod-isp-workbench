@@ -1,0 +1,314 @@
+{
+  "status": "experimental_only_not_deployed",
+  "policy": "ridge regression predicts per-image Learned-minus-Classical PSNR; route Learned when predicted benefit meets calibration threshold, otherwise route Classical",
+  "feature_names": [
+    "mosaic_median",
+    "mosaic_std",
+    "highpass_median_abs",
+    "local_highpass_p10",
+    "local_highpass_median",
+    "mosaic_p99",
+    "fraction_above_0_98",
+    "fraction_below_0",
+    "mosaic_p90_minus_p10"
+  ],
+  "fit": {
+    "calibration_pairs": 28,
+    "calibration_scene_split": "data/siddcc_bayer/calibration",
+    "ridge_l2": 10.0,
+    "coefficients": [
+      5.677126087904847,
+      -1.0001789840697533,
+      -1.2529986932781076,
+      -0.7312907178614745,
+      -0.217561351227517,
+      -0.9307192994944257,
+      -1.2064657739707765,
+      0.3544715909001599,
+      1.217598485750644,
+      -1.232853156989124
+    ],
+    "feature_mean": [
+      0.11754317488521338,
+      0.08617716741615108,
+      0.028374176447479322,
+      0.02531645308148914,
+      0.057245322686087875,
+      0.3094940969986576,
+      1.6348702566964285e-06,
+      0.03933116367885044,
+      0.21598287487902348
+    ],
+    "feature_scale": [
+      0.09707584104470128,
+      0.0623458867848263,
+      0.021833567230589337,
+      0.02196898484577887,
+      0.047586191074319696,
+      0.2263094132999527,
+      8.495035045144154e-06,
+      0.07711023033667021,
+      0.1575684543313137
+    ],
+    "threshold_db": 10.014865338887255,
+    "max_calibration_psnr_drop_db": 0.5,
+    "calibration_policy": {
+      "threshold": 10.014865338887255,
+      "routed_percent": 39.285714285714285,
+      "mean_psnr": 19.52821428571428,
+      "quality_drop_db": 0.3810714285714276
+    }
+  },
+  "validation": {
+    "pairs": 36,
+    "scene_split": "data/siddcc_bayer/validation",
+    "neural_image_percent": 22.22222222222222,
+    "theoretical_neural_invocations_avoided_percent": 77.77777777777779,
+    "all_learned_metrics_mean": {
+      "psnr": 20.478888888888886,
+      "ssim": 0.7576666666666666,
+      "delta_e": 12.143055555555554,
+      "lpips": 0.33765833333333334
+    },
+    "routed_metrics_mean": {
+      "psnr": 18.444166666666664,
+      "ssim": 0.7347805555555555,
+      "delta_e": 12.147777777777778,
+      "lpips": 0.2196888888888889
+    },
+    "metric_change_vs_all_learned": {
+      "psnr": -2.0347222222222214,
+      "ssim": -0.02288611111111105,
+      "delta_e": 0.004722222222223849,
+      "lpips": -0.11796944444444443
+    },
+    "predicted_benefit_correlation": 0.9036223018740039,
+    "predicted_benefit_mae_db": 2.723338072337177,
+    "per_image": [
+      {
+        "image": "0001_NOISY_RAW_034.MAT",
+        "predicted_benefit_db": 10.558641119143298,
+        "actual_benefit_db": 13.100000000000001,
+        "route_learned": true
+      },
+      {
+        "image": "0001_NOISY_RAW_145.MAT",
+        "predicted_benefit_db": 10.792934642750852,
+        "actual_benefit_db": 13.600000000000001,
+        "route_learned": true
+      },
+      {
+        "image": "0002_NOISY_RAW_014.MAT",
+        "predicted_benefit_db": 5.609593251992119,
+        "actual_benefit_db": 5.130000000000001,
+        "route_learned": false
+      },
+      {
+        "image": "0002_NOISY_RAW_023.MAT",
+        "predicted_benefit_db": 5.598054058843323,
+        "actual_benefit_db": 5.080000000000002,
+        "route_learned": false
+      },
+      {
+        "image": "0003_NOISY_RAW_060.MAT",
+        "predicted_benefit_db": -11.99308238760743,
+        "actual_benefit_db": -2.3800000000000026,
+        "route_learned": false
+      },
+      {
+        "image": "0003_NOISY_RAW_139.MAT",
+        "predicted_benefit_db": -12.023264754826702,
+        "actual_benefit_db": -2.3200000000000003,
+        "route_learned": false
+      },
+      {
+        "image": "0004_NOISY_RAW_060.MAT",
+        "predicted_benefit_db": 9.394658650407123,
+        "actual_benefit_db": 11.310000000000002,
+        "route_learned": false
+      },
+      {
+        "image": "0004_NOISY_RAW_077.MAT",
+        "predicted_benefit_db": 9.407894842631306,
+        "actual_benefit_db": 11.32,
+        "route_learned": false
+      },
+      {
+        "image": "0005_NOISY_RAW_065.MAT",
+        "predicted_benefit_db": -0.7345017708466409,
+        "actual_benefit_db": -0.46999999999999886,
+        "route_learned": false
+      },
+      {
+        "image": "0005_NOISY_RAW_091.MAT",
+        "predicted_benefit_db": -1.4558614369091276,
+        "actual_benefit_db": -0.35999999999999943,
+        "route_learned": false
+      },
+      {
+        "image": "0006_NOISY_RAW_020.MAT",
+        "predicted_benefit_db": -13.439768665469199,
+        "actual_benefit_db": -1.8100000000000023,
+        "route_learned": false
+      },
+      {
+        "image": "0006_NOISY_RAW_146.MAT",
+        "predicted_benefit_db": -13.221862658571421,
+        "actual_benefit_db": -1.7100000000000009,
+        "route_learned": false
+      },
+      {
+        "image": "0008_NOISY_RAW_058.MAT",
+        "predicted_benefit_db": 0.030813455046312874,
+        "actual_benefit_db": 0.8000000000000007,
+        "route_learned": false
+      },
+      {
+        "image": "0008_NOISY_RAW_094.MAT",
+        "predicted_benefit_db": 0.034401534088958664,
+        "actual_benefit_db": 0.8500000000000014,
+        "route_learned": false
+      },
+      {
+        "image": "0010_NOISY_RAW_008.MAT",
+        "predicted_benefit_db": -2.287134165977302,
+        "actual_benefit_db": 0.5300000000000011,
+        "route_learned": false
+      },
+      {
+        "image": "0010_NOISY_RAW_146.MAT",
+        "predicted_benefit_db": -2.317047384213285,
+        "actual_benefit_db": 0.4299999999999997,
+        "route_learned": false
+      },
+      {
+        "image": "0012_NOISY_RAW_068.MAT",
+        "predicted_benefit_db": 0.38486682678085843,
+        "actual_benefit_db": 0.33999999999999986,
+        "route_learned": false
+      },
+      {
+        "image": "0012_NOISY_RAW_121.MAT",
+        "predicted_benefit_db": 0.4172428573905873,
+        "actual_benefit_db": 0.3500000000000014,
+        "route_learned": false
+      },
+      {
+        "image": "0017_NOISY_RAW_106.MAT",
+        "predicted_benefit_db": -3.693931844698487,
+        "actual_benefit_db": -1.6499999999999986,
+        "route_learned": false
+      },
+      {
+        "image": "0017_NOISY_RAW_133.MAT",
+        "predicted_benefit_db": -3.6928953135116775,
+        "actual_benefit_db": -1.6499999999999986,
+        "route_learned": false
+      },
+      {
+        "image": "0018_NOISY_RAW_031.MAT",
+        "predicted_benefit_db": 11.658485169822354,
+        "actual_benefit_db": 15.219999999999999,
+        "route_learned": true
+      },
+      {
+        "image": "0018_NOISY_RAW_046.MAT",
+        "predicted_benefit_db": 11.655406490302848,
+        "actual_benefit_db": 15.229999999999999,
+        "route_learned": true
+      },
+      {
+        "image": "0019_NOISY_RAW_011.MAT",
+        "predicted_benefit_db": 9.755540777986862,
+        "actual_benefit_db": 10.950000000000001,
+        "route_learned": false
+      },
+      {
+        "image": "0019_NOISY_RAW_133.MAT",
+        "predicted_benefit_db": 9.78349729619525,
+        "actual_benefit_db": 10.899999999999999,
+        "route_learned": false
+      },
+      {
+        "image": "0022_NOISY_RAW_035.MAT",
+        "predicted_benefit_db": -5.453959569027965,
+        "actual_benefit_db": 0.3500000000000014,
+        "route_learned": false
+      },
+      {
+        "image": "0022_NOISY_RAW_062.MAT",
+        "predicted_benefit_db": -5.44535243289875,
+        "actual_benefit_db": 0.3200000000000003,
+        "route_learned": false
+      },
+      {
+        "image": "0025_NOISY_RAW_003.MAT",
+        "predicted_benefit_db": 9.47430133976494,
+        "actual_benefit_db": 9.220000000000002,
+        "route_learned": false
+      },
+      {
+        "image": "0025_NOISY_RAW_096.MAT",
+        "predicted_benefit_db": 9.458592847044974,
+        "actual_benefit_db": 9.15,
+        "route_learned": false
+      },
+      {
+        "image": "0028_NOISY_RAW_028.MAT",
+        "predicted_benefit_db": 11.411140762247305,
+        "actual_benefit_db": 9.23,
+        "route_learned": true
+      },
+      {
+        "image": "0028_NOISY_RAW_033.MAT",
+        "predicted_benefit_db": 11.491672683156512,
+        "actual_benefit_db": 9.24,
+        "route_learned": true
+      },
+      {
+        "image": "0030_NOISY_RAW_074.MAT",
+        "predicted_benefit_db": -1.6745354725695523,
+        "actual_benefit_db": -2.6900000000000013,
+        "route_learned": false
+      },
+      {
+        "image": "0030_NOISY_RAW_138.MAT",
+        "predicted_benefit_db": -1.6967863016624984,
+        "actual_benefit_db": -2.7300000000000004,
+        "route_learned": false
+      },
+      {
+        "image": "0032_NOISY_RAW_019.MAT",
+        "predicted_benefit_db": 9.081879696185354,
+        "actual_benefit_db": 6.999999999999998,
+        "route_learned": false
+      },
+      {
+        "image": "0032_NOISY_RAW_054.MAT",
+        "predicted_benefit_db": 9.034274212842082,
+        "actual_benefit_db": 6.99,
+        "route_learned": false
+      },
+      {
+        "image": "0033_NOISY_RAW_042.MAT",
+        "predicted_benefit_db": 11.470263233269785,
+        "actual_benefit_db": 11.9,
+        "route_learned": true
+      },
+      {
+        "image": "0033_NOISY_RAW_146.MAT",
+        "predicted_benefit_db": 11.43625133079068,
+        "actual_benefit_db": 11.520000000000001,
+        "route_learned": true
+      }
+    ]
+  },
+  "runtime_seconds": 30.400870291050524,
+  "limitations": [
+    "One calibration scene and one validation scene only.",
+    "Features are computed on 256-pixel center crops, not full-resolution images.",
+    "The feature policy met the declared calibration budget but failed that 0.5 dB budget on validation.",
+    "Avoided neural image invocation percentage is theoretical; end-to-end gate latency and memory were not benchmarked.",
+    "This policy is not connected to the application."
+  ]
+}

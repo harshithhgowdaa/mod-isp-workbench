@@ -1,0 +1,38 @@
+{
+  "checkpoint": "models/mod_isp.pt",
+  "calibration_data": "data/siddcc_bayer/calibration",
+  "tile": 56,
+  "representative_samples": 256,
+  "representative_pairs": 28,
+  "representative_min": -0.1468355655670166,
+  "representative_max": 1.322680950164795,
+  "representative_range_note": "Spatially distributed tiles from all calibration captures; actual Bayer values after metadata AsShotNeutral white balance, with sub-black noise and headroom retained.",
+  "sample_input_min": -1.243058295186117e-10,
+  "sample_input_max": 0.04620197042822838,
+  "bytes": 47112,
+  "input_quantization": [
+    0.0057628098875284195,
+    -103
+  ],
+  "output_quantization": [
+    0.004027440678328276,
+    -128
+  ],
+  "max_abs_error": 0.015597999095916748,
+  "mean_abs_error": 0.004622107837349176,
+  "checkpoint_metadata": {
+    "trained_steps": 1660,
+    "dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/train",
+    "architecture": "bayer-v1",
+    "teacher_format": "",
+    "teacher": "",
+    "init_checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/student_metaisp2023.pt",
+    "init_trained_steps": 320,
+    "epochs": 10,
+    "best_epoch": 10,
+    "validation_l1": 0.051515740963319935,
+    "patch_size": 128,
+    "train_pairs": 166,
+    "device": "mps"
+  }
+}

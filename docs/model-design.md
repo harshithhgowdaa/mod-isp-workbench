@@ -15,17 +15,17 @@ It is not a universal camera ISP, a camera-calibrated denoiser for arbitrary sen
 
 Training uses registered input/target crops and an L1 reconstruction objective. An optional teacher adds a weighted L1 distillation term. The promoted student was distilled from the authors' 2023 MetaISP `real_D` checkpoint for 320 optimizer steps. The teacher adapter uses patch-local resized BGR context and explicit sensor metadata; this differs from the teacher's full-frame inference context and remains an adaptation.
 
-The present Bayer data experiment used 40 training crops and eight calibration crops from one SIDD-CC source capture, plus four held-out crops from a different capture. The calibration source is the training scene. Therefore the four-patch result is a smoke-scale, scene-separated comparison, not evidence of broad cross-camera or cross-scene generalization.
+The current Bayer candidate was fine-tuned for 10 epochs on all 166 RAW→sRGB training pairs (1,660 optimizer steps) from eight SIDD-CC physical scenes. It started from the student previously distilled from the alternative 2023 MetaISP teacher. Model selection used 36 pairs from a ninth physical scene; gate and LiteRT calibration use 28 pairs from a tenth. The split groups do not overlap. Both center-crop and full-frame metrics are available for the 36-pair validation scene. Since center-crop validation loss informed checkpoint selection, full-frame results are not an untouched test; they remain limited to one scene and do not establish multi-camera generalization.
 
 ## Classical and hybrid Bayer paths
 
-The classical baseline normalizes and white-balances the mosaic, applies bilinear demosaicing, then runs RGB finishing. The hybrid rank gate scores tiles by variance normalized by squared mean brightness and selects a fixed per-image fraction. Neural restoration runs on selected tiles; remaining tiles keep the classical result, with blending at transitions.
+The classical baseline normalizes and white-balances the mosaic, applies Malvar–He–Cutler (MHC) 5×5 Bayer demosaicing, then runs RGB finishing. Camera DNG rendering remains LibRaw-managed. The hybrid path is experimental and does not have a deployable quality-safe gate: the candidate-specific ExtraTrees policy routed 99% of tiles and lost 0.440 dB PSNR on the 36-capture validation scene, within the declared 0.5 dB bound, but invoked only 1% fewer neural tiles and was slower (89.1 ms median Hybrid vs 38.5 ms Learned). Its PSNR pass is not a compute or latency win. A cheaper Ridge gate routed 98% but lost 1.204 dB on the same validation scene. Neither is promoted. See `tile_gate_paperfaithful_mhc_512_actual.json` and `tile_gate_paperfaithful_mhc_ridge_512.json`.
 
-The gate was selected on same-scene calibration crops with a 0.5 dB mean PSNR-drop budget. This is a relative tile-ranking heuristic, not a calibrated sensor-noise model. A 96% routed fraction does not establish 4% MAC savings or a latency improvement.
+An earlier ExtraTrees experiment with bilinear demosaicing and a different candidate is superseded. On the MHC path, the selected ExtraTrees policy routes 99% of tiles, loses 0.440 dB PSNR, and reduces tile calls by 1%; actual app-path median latency is 89.1 ms Hybrid versus 38.5 ms Learned. This passes only the PSNR-loss threshold, not the efficiency objective. The linear Ridge policy saves two percentage points of tile calls but loses 1.204 dB. Both use the same repeatedly consulted 36-capture development-validation scene and are not independent final tests. A tile-call percentage is not a measured MAC, energy, or end-to-end latency saving.
 
 ## sRGB path
 
-The sRGB denoiser is a 245,223-parameter fine-tuned Samsung generic-lite NAFNet. It was initialized from the upstream checkpoint and fine-tuned on 206 SIDD-CC sRGB pairs from 103 scenes, with 24 pairs from 12 separate training scenes held for validation. The fine-tuned checkpoint was evaluated on 928 SIDD-CC test blocks. This is an sRGB-domain denoising experiment, not the Bayer model and not an official leaderboard result.
+The sRGB denoiser is a 245,223-parameter Samsung generic-lite NAFNet adaptation. The current run trained for 10 epochs on 194 SIDD-CC pairs from nine physical scenes and selected epoch 10 using 36 pairs from a tenth scene. On those validation crops, mean PSNR rose from 34.41 dB for the upstream initialization to 37.32 dB. On the untouched 928-block SIDD-CC test set, mean PSNR/SSIM are 33.755 dB/0.7757 (initialization: 29.303 dB/0.5738; noisy input: 26.119 dB/0.4251). This is an sRGB-domain denoising experiment, not the Bayer model and not an official leaderboard result.
 
 For camera RAW, LibRaw performs camera-aware demosaic and sRGB rendering. The sRGB denoiser runs after that render. The Bayer student is not used on arbitrary camera RAW because camera-specific paired training and validation are unavailable.
 
@@ -37,7 +37,7 @@ Training/evaluation data, local virtual environments, and the original 2023 teac
 
 ## Known design limits
 
-- Bayer training and calibration are tiny and scene-concentrated.
+- SIDD-CC provides only ten physical scene groups for the RAW training split; Bayer full-frame validation covers 36 captures from one scene, which informed checkpoint selection and is not broad camera generalization.
 - Bayer learned and hybrid paths have substantial perceptual-metric regressions on some held-out patches.
 - Relative gate calibration does not guarantee quality on unseen scenes.
 - The sRGB and Bayer domains have separate weights and color assumptions.

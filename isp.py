@@ -1,4 +1,4 @@
-"""Bayer handling and classical ISP primitives. All arrays are float32, [0, 1]."""
+"""Bayer handling and classical ISP primitives; sensor mosaics may be unclipped."""
 from pathlib import Path
 import io
 import numpy as np
@@ -20,8 +20,8 @@ def decode_bayer(data, filename):
     ext=Path(filename).suffix.lower()
     if ext=='.npy':
         m=np.load(io.BytesIO(data),allow_pickle=False).astype(np.float32)
-        if m.ndim!=2 or not np.isfinite(m).all() or m.min()<0 or m.max()>1: raise ValueError('NPY must be a finite 2-D RGGB Bayer mosaic normalized to [0,1].')
-        return m, {'kind':'Normalized RGGB Bayer array','gains':[1.,1.,1.,1.],'ccm':np.eye(3).tolist()}
+        if m.ndim!=2 or not np.isfinite(m).all() or m.min() < -0.5 or m.max() > 8: raise ValueError('NPY must be a finite 2-D RGGB Bayer mosaic in black-subtracted sensor-normalized units with AsShotNeutral white balance already applied (accepted range -0.5 to 8).')
+        return m, {'kind':'Black-subtracted, white-balanced RGGB Bayer array','gains':[1.,1.,1.,1.],'ccm':np.eye(3).tolist(),'preserve_bayer_range':True}
     if ext not in RAW_EXT: raise ValueError('Unsupported Bayer format.')
     try: import rawpy
     except ImportError: raise ValueError('Install rawpy to decode camera RAW files.')
@@ -90,20 +90,72 @@ def decode_bayer(data, filename):
     except ValueError: raise
     except Exception as e: raise ValueError(f'Could not decode RAW: {e}')
 
-def white_balance(m,gains):
+def white_balance(m,gains,clip=True):
     out=m.copy()
     for gain,(y,x) in zip(gains,[(0,0),(0,1),(1,0),(1,1)]): out[y::2,x::2]*=gain
-    return np.clip(out,0,1)
+    return np.clip(out,0,1) if clip else out
 
 def demosaic(m):
-    # Bilinear interpolation through normalized separable convolution, handling borders.
-    h,w=m.shape; out=[]
-    for offsets in [[(0,0)],[(0,1),(1,0)],[(1,1)]]:
-        v=np.zeros_like(m); mask=np.zeros_like(m)
-        for y,x in offsets: v[y::2,x::2]=m[y::2,x::2];mask[y::2,x::2]=1
-        def conv(a):
-            a=np.pad(a,1,mode='reflect'); return (a[:-2,:-2]+2*a[:-2,1:-1]+a[:-2,2:]+2*a[1:-1,:-2]+4*a[1:-1,1:-1]+2*a[1:-1,2:]+a[2:,:-2]+2*a[2:,1:-1]+a[2:,2:])
-        out.append(conv(v)/np.maximum(conv(mask),1e-8))
-    return np.clip(np.stack(out,-1),0,1)
+    """Demosaic an even RGGB mosaic with Malvar-He-Cutler 5x5 filters.
+
+    The center pixel's measured CFA value is always restored exactly after
+    filtering. The green-at-red/blue and red/blue-at-green kernels use the
+    Bayer phase, while the opposite-color samples use the diagonal kernel.
+    """
+    from scipy.ndimage import convolve
+
+    m=np.asarray(m,dtype=np.float32)
+    h,w=m.shape
+    if h<2 or w<2:
+        raise ValueError('Bayer mosaic must be at least 2x2.')
+    h-=h%2;w-=w%2;m=m[:h,:w]
+    green_at_rb=np.array([
+        [0,0,-1,0,0],
+        [0,0,2,0,0],
+        [-1,2,4,2,-1],
+        [0,0,2,0,0],
+        [0,0,-1,0,0],
+    ],dtype=np.float32)/8
+    rb_at_g_h=np.array([
+        [0,0,.5,0,0],
+        [0,-1,0,-1,0],
+        [-1,4,5,4,-1],
+        [0,-1,0,-1,0],
+        [0,0,.5,0,0],
+    ],dtype=np.float32)/8
+    rb_at_g_v=rb_at_g_h.T.copy()
+    rb_at_opposite=np.array([
+        [0,0,-1.5,0,0],
+        [0,2,0,2,0],
+        [-1.5,0,6,0,-1.5],
+        [0,2,0,2,0],
+        [0,0,-1.5,0,0],
+    ],dtype=np.float32)/8
+
+    out=np.empty((h,w,3),dtype=np.float32)
+    red=m[0::2,0::2];green_r=m[0::2,1::2]
+    green_b=m[1::2,0::2];blue=m[1::2,1::2]
+    rmask=np.zeros((h,w),dtype=bool);rmask[0::2,0::2]=True
+    bmask=np.zeros((h,w),dtype=bool);bmask[1::2,1::2]=True
+
+    g=convolve(m,green_at_rb,mode='reflect')
+    out[...,1]=g
+    out[0::2,1::2,1]=green_r;out[1::2,0::2,1]=green_b
+
+    opposite=convolve(m,rb_at_opposite,mode='reflect')
+    out[...,0]=opposite;out[...,2]=opposite
+    out[0::2,0::2,0]=red;out[1::2,1::2,2]=blue
+
+    horizontal=convolve(m,rb_at_g_h,mode='reflect')
+    vertical=convolve(m,rb_at_g_v,mode='reflect')
+    # Green samples beside a red site have red horizontally and blue
+    # vertically; the orientation is reversed beside a blue site.
+    out[0::2,1::2,0]=horizontal[0::2,1::2]
+    out[0::2,1::2,2]=vertical[0::2,1::2]
+    out[1::2,0::2,0]=vertical[1::2,0::2]
+    out[1::2,0::2,2]=horizontal[1::2,0::2]
+    out[...,0][rmask]=red.ravel()
+    out[...,2][bmask]=blue.ravel()
+    return np.clip(out,0,1)
 
 def rgb_image(a): return Image.fromarray(np.uint8(np.clip(a,0,1)*255))

@@ -1,0 +1,29 @@
+{
+  "checkpoint": "models/sidd_srgb_nafnet_lite.pt",
+  "onnx": "static/showcase/nafnet-srgb.onnx",
+  "onnxruntime": "1.22.0",
+  "providers": [
+    "CPUExecutionProvider"
+  ],
+  "seed": 2026,
+  "input_shape": [
+    1,
+    3,
+    256,
+    256
+  ],
+  "output_shape": [
+    1,
+    3,
+    256,
+    256
+  ],
+  "mean_absolute_error": 1.5722722537248046e-06,
+  "p99_absolute_error": 1.3589859008789062e-05,
+  "max_absolute_error": 0.00044727325439453125,
+  "finite": true,
+  "tolerance": {
+    "mean_absolute_error_max": 0.0001,
+    "max_absolute_error_max": 0.002
+  }
+}

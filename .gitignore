@@ -17,3 +17,6 @@ models/metaisp_2023_real_D.pth
 work/
 .vercel
 dist/
+
+# Downloaded training feature weights
+.cache/

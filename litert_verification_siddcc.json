@@ -1,0 +1,800 @@
+{
+  "source": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/validation",
+  "comparison": "PyTorch float32 vs full-int8 LiteRT on held-out tiles; no mobile NPU measured",
+  "rows": [
+    {
+      "image": "0001_NOISY_RAW_034.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.00225807330571115,
+      "max_abs_error": 0.010925084352493286,
+      "cpu_inference_ms": 0.379
+    },
+    {
+      "image": "0001_NOISY_RAW_034.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.008630485273897648,
+      "max_abs_error": 0.01732081174850464,
+      "cpu_inference_ms": 0.303
+    },
+    {
+      "image": "0001_NOISY_RAW_145.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0022225435823202133,
+      "max_abs_error": 0.00972294807434082,
+      "cpu_inference_ms": 0.305
+    },
+    {
+      "image": "0001_NOISY_RAW_145.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.00794517807662487,
+      "max_abs_error": 0.016760125756263733,
+      "cpu_inference_ms": 0.301
+    },
+    {
+      "image": "0002_NOISY_RAW_014.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0017160775605589151,
+      "max_abs_error": 0.009220778942108154,
+      "cpu_inference_ms": 0.322
+    },
+    {
+      "image": "0002_NOISY_RAW_014.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0026036431081593037,
+      "max_abs_error": 0.009180054068565369,
+      "cpu_inference_ms": 0.299
+    },
+    {
+      "image": "0002_NOISY_RAW_023.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0016785424668341875,
+      "max_abs_error": 0.007163882255554199,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0002_NOISY_RAW_023.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002550112549215555,
+      "max_abs_error": 0.010465845465660095,
+      "cpu_inference_ms": 0.296
+    },
+    {
+      "image": "0003_NOISY_RAW_060.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0021124586928635836,
+      "max_abs_error": 0.009813666343688965,
+      "cpu_inference_ms": 0.31
+    },
+    {
+      "image": "0003_NOISY_RAW_060.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0015936311101540923,
+      "max_abs_error": 0.007239222526550293,
+      "cpu_inference_ms": 0.291
+    },
+    {
+      "image": "0003_NOISY_RAW_139.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002165302401408553,
+      "max_abs_error": 0.011012792587280273,
+      "cpu_inference_ms": 0.318
+    },
+    {
+      "image": "0003_NOISY_RAW_139.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0016076838364824653,
+      "max_abs_error": 0.00751948356628418,
+      "cpu_inference_ms": 0.291
+    },
+    {
+      "image": "0004_NOISY_RAW_060.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.00184335233643651,
+      "max_abs_error": 0.008232027292251587,
+      "cpu_inference_ms": 0.314
+    },
+    {
+      "image": "0004_NOISY_RAW_060.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.007031603716313839,
+      "max_abs_error": 0.016423121094703674,
+      "cpu_inference_ms": 0.295
+    },
+    {
+      "image": "0004_NOISY_RAW_077.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0018309835577383637,
+      "max_abs_error": 0.008371025323867798,
+      "cpu_inference_ms": 0.309
+    },
+    {
+      "image": "0004_NOISY_RAW_077.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.007043002638965845,
+      "max_abs_error": 0.01827673614025116,
+      "cpu_inference_ms": 0.296
+    },
+    {
+      "image": "0005_NOISY_RAW_065.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0019511544378474355,
+      "max_abs_error": 0.008351683616638184,
+      "cpu_inference_ms": 0.312
+    },
+    {
+      "image": "0005_NOISY_RAW_065.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002626881469041109,
+      "max_abs_error": 0.009092926979064941,
+      "cpu_inference_ms": 0.294
+    },
+    {
+      "image": "0005_NOISY_RAW_091.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0021476855035871267,
+      "max_abs_error": 0.010015130043029785,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0005_NOISY_RAW_091.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0024297283962368965,
+      "max_abs_error": 0.011031001806259155,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0006_NOISY_RAW_020.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.03188775510204082,
+      "mean_abs_error": 0.07101184129714966,
+      "max_abs_error": 0.31137001514434814,
+      "cpu_inference_ms": 0.311
+    },
+    {
+      "image": "0006_NOISY_RAW_020.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002179460134357214,
+      "max_abs_error": 0.01706823706626892,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0006_NOISY_RAW_146.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.06482832133769989,
+      "max_abs_error": 0.31749844551086426,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0006_NOISY_RAW_146.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002081516897305846,
+      "max_abs_error": 0.009651601314544678,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0008_NOISY_RAW_058.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0021313298493623734,
+      "max_abs_error": 0.010008513927459717,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0008_NOISY_RAW_058.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0034761892165988684,
+      "max_abs_error": 0.012110590934753418,
+      "cpu_inference_ms": 0.301
+    },
+    {
+      "image": "0008_NOISY_RAW_094.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002162802265956998,
+      "max_abs_error": 0.009728789329528809,
+      "cpu_inference_ms": 0.311
+    },
+    {
+      "image": "0008_NOISY_RAW_094.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.003078365931287408,
+      "max_abs_error": 0.010567009449005127,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0010_NOISY_RAW_008.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002532127546146512,
+      "max_abs_error": 0.01249462366104126,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0010_NOISY_RAW_008.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002261967398226261,
+      "max_abs_error": 0.009563177824020386,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0010_NOISY_RAW_146.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0020598520059138536,
+      "max_abs_error": 0.009782493114471436,
+      "cpu_inference_ms": 0.323
+    },
+    {
+      "image": "0010_NOISY_RAW_146.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0020220535807311535,
+      "max_abs_error": 0.007990986108779907,
+      "cpu_inference_ms": 0.291
+    },
+    {
+      "image": "0012_NOISY_RAW_068.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002125554019585252,
+      "max_abs_error": 0.009863615036010742,
+      "cpu_inference_ms": 0.317
+    },
+    {
+      "image": "0012_NOISY_RAW_068.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0018826317973434925,
+      "max_abs_error": 0.007679671049118042,
+      "cpu_inference_ms": 0.311
+    },
+    {
+      "image": "0012_NOISY_RAW_121.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002243171911686659,
+      "max_abs_error": 0.02395153045654297,
+      "cpu_inference_ms": 0.312
+    },
+    {
+      "image": "0012_NOISY_RAW_121.MAT",
+      "tile": [
+        1500,
+        2662
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002245128620415926,
+      "max_abs_error": 0.009813904762268066,
+      "cpu_inference_ms": 0.294
+    },
+    {
+      "image": "0017_NOISY_RAW_106.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0016398251755163074,
+      "max_abs_error": 0.00795835256576538,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0017_NOISY_RAW_106.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.01628252863883972,
+      "max_abs_error": 0.14279520511627197,
+      "cpu_inference_ms": 0.29
+    },
+    {
+      "image": "0017_NOISY_RAW_133.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0017039332306012511,
+      "max_abs_error": 0.008275628089904785,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0017_NOISY_RAW_133.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.01739831641316414,
+      "max_abs_error": 0.14393997192382812,
+      "cpu_inference_ms": 0.303
+    },
+    {
+      "image": "0018_NOISY_RAW_031.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.007408746052533388,
+      "max_abs_error": 0.01744028925895691,
+      "cpu_inference_ms": 0.309
+    },
+    {
+      "image": "0018_NOISY_RAW_031.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0025456640869379044,
+      "max_abs_error": 0.010859042406082153,
+      "cpu_inference_ms": 0.292
+    },
+    {
+      "image": "0018_NOISY_RAW_046.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.007483378518372774,
+      "max_abs_error": 0.01693636178970337,
+      "cpu_inference_ms": 0.311
+    },
+    {
+      "image": "0018_NOISY_RAW_046.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0022356202825903893,
+      "max_abs_error": 0.009187579154968262,
+      "cpu_inference_ms": 0.29
+    },
+    {
+      "image": "0019_NOISY_RAW_011.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0023469505831599236,
+      "max_abs_error": 0.010065346956253052,
+      "cpu_inference_ms": 0.311
+    },
+    {
+      "image": "0019_NOISY_RAW_011.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0024102998431771994,
+      "max_abs_error": 0.010837137699127197,
+      "cpu_inference_ms": 0.295
+    },
+    {
+      "image": "0019_NOISY_RAW_133.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0023621509317308664,
+      "max_abs_error": 0.009569436311721802,
+      "cpu_inference_ms": 0.314
+    },
+    {
+      "image": "0019_NOISY_RAW_133.MAT",
+      "tile": [
+        1516,
+        2022
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.00222639343701303,
+      "max_abs_error": 0.010284572839736938,
+      "cpu_inference_ms": 0.29
+    },
+    {
+      "image": "0022_NOISY_RAW_035.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0017324130749329925,
+      "max_abs_error": 0.00806891918182373,
+      "cpu_inference_ms": 0.309
+    },
+    {
+      "image": "0022_NOISY_RAW_035.MAT",
+      "tile": [
+        1558,
+        2102
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.001989050069823861,
+      "max_abs_error": 0.010167896747589111,
+      "cpu_inference_ms": 0.292
+    },
+    {
+      "image": "0022_NOISY_RAW_062.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.001664432929828763,
+      "max_abs_error": 0.007952004671096802,
+      "cpu_inference_ms": 0.31
+    },
+    {
+      "image": "0022_NOISY_RAW_062.MAT",
+      "tile": [
+        1558,
+        2102
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0019939765334129333,
+      "max_abs_error": 0.009821206331253052,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0025_NOISY_RAW_003.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0015799469547346234,
+      "max_abs_error": 0.0070700496435165405,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0025_NOISY_RAW_003.MAT",
+      "tile": [
+        1492,
+        2654
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.006012917496263981,
+      "max_abs_error": 0.015807494521141052,
+      "cpu_inference_ms": 0.294
+    },
+    {
+      "image": "0025_NOISY_RAW_096.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0017155706882476807,
+      "max_abs_error": 0.007142156362533569,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0025_NOISY_RAW_096.MAT",
+      "tile": [
+        1492,
+        2654
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.00579468160867691,
+      "max_abs_error": 0.01554115116596222,
+      "cpu_inference_ms": 0.293
+    },
+    {
+      "image": "0028_NOISY_RAW_028.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.001976550556719303,
+      "max_abs_error": 0.00940956175327301,
+      "cpu_inference_ms": 0.31
+    },
+    {
+      "image": "0028_NOISY_RAW_028.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002796685555949807,
+      "max_abs_error": 0.008615903556346893,
+      "cpu_inference_ms": 0.295
+    },
+    {
+      "image": "0028_NOISY_RAW_033.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0025070225819945335,
+      "max_abs_error": 0.01100921630859375,
+      "cpu_inference_ms": 0.309
+    },
+    {
+      "image": "0028_NOISY_RAW_033.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002472564345225692,
+      "max_abs_error": 0.00814327597618103,
+      "cpu_inference_ms": 0.294
+    },
+    {
+      "image": "0030_NOISY_RAW_074.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0017785954987630248,
+      "max_abs_error": 0.008023619651794434,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0030_NOISY_RAW_074.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.003205371554940939,
+      "max_abs_error": 0.011852085590362549,
+      "cpu_inference_ms": 0.301
+    },
+    {
+      "image": "0030_NOISY_RAW_138.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0020220698788762093,
+      "max_abs_error": 0.009080290794372559,
+      "cpu_inference_ms": 0.333
+    },
+    {
+      "image": "0030_NOISY_RAW_138.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0028941554483026266,
+      "max_abs_error": 0.010198473930358887,
+      "cpu_inference_ms": 0.294
+    },
+    {
+      "image": "0032_NOISY_RAW_019.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0032501749228686094,
+      "max_abs_error": 0.011220663785934448,
+      "cpu_inference_ms": 0.308
+    },
+    {
+      "image": "0032_NOISY_RAW_019.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.005617029033601284,
+      "max_abs_error": 0.01461726427078247,
+      "cpu_inference_ms": 0.295
+    },
+    {
+      "image": "0032_NOISY_RAW_054.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.003731905249878764,
+      "max_abs_error": 0.012067347764968872,
+      "cpu_inference_ms": 0.31
+    },
+    {
+      "image": "0032_NOISY_RAW_054.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.005617433227598667,
+      "max_abs_error": 0.01615351438522339,
+      "cpu_inference_ms": 0.296
+    },
+    {
+      "image": "0033_NOISY_RAW_042.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.0022424994967877865,
+      "max_abs_error": 0.009587317705154419,
+      "cpu_inference_ms": 0.307
+    },
+    {
+      "image": "0033_NOISY_RAW_042.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.003951971419155598,
+      "max_abs_error": 0.012778818607330322,
+      "cpu_inference_ms": 0.296
+    },
+    {
+      "image": "0033_NOISY_RAW_146.MAT",
+      "tile": [
+        0,
+        0
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002020069397985935,
+      "max_abs_error": 0.008978396654129028,
+      "cpu_inference_ms": 0.326
+    },
+    {
+      "image": "0033_NOISY_RAW_146.MAT",
+      "tile": [
+        1512,
+        2016
+      ],
+      "input_clipped_percent": 0.0,
+      "mean_abs_error": 0.002782304072752595,
+      "max_abs_error": 0.008239679038524628,
+      "cpu_inference_ms": 0.298
+    }
+  ],
+  "mean_abs_error": 0.005134772730848959,
+  "mean_input_clipped_percent": 0.0004428854875283447
+}

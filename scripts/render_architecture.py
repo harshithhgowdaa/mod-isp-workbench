@@ -55,7 +55,7 @@ box(650, 342, 500, 68, "Input decoder and router", "Validate file type · preser
 label(80, 438, "02  /  Input domain")
 box(80, 464, 500, 132, "Camera RAW", "LibRaw / rawpy render with camera metadata\nThen enter the rendered sRGB path", "#eef3ff", "#2056ed")
 box(650, 464, 500, 132, "Rendered RGB / sRGB", "JPEG · PNG · WebP · TIFF\nPreserve RGB; do not convert to Bayer", "#ffffff", "#737d8d")
-box(1220, 464, 500, 132, "Normalized Bayer NPY", "Finite 2-D RGGB mosaic in [0, 1]\nBlack-level normalization + white balance", "#eef3ff", "#2056ed")
+box(1220, 464, 500, 132, "Normalized Bayer NPY", "Finite RGGB mosaic · black-subtracted + WB\nSensor-white normalized · keeps sub-black/headroom", "#eef3ff", "#2056ed")
 arrow([(1455, 322), (1455, 330), (900, 330), (900, 342)])
 arrow([(900, 410), (900, 438), (330, 438), (330, 464)])
 arrow([(900, 410), (900, 464)])
@@ -73,7 +73,7 @@ box(105, 833, 715, 90, "SIDD-CC sRGB NAFNet", "Fine-tuned denoiser for rendered 
 box(105, 944, 715, 90, "RGB hybrid", "High-pass tile ranking · selected learned tiles · smooth blend", "#f7f8fa", "#7384a0")
 
 box(960, 722, 715, 90, "Classical Bayer baseline", "Bilinear demosaic → RGB finishing", "#f7f8fa", "#737d8d")
-box(960, 833, 715, 90, "Compact Bayer-v1 student", "Packed RGGB → learned RGB reconstruction · 29,980 parameters", "#eef3ff", "#2056ed")
+box(960, 833, 715, 90, "Compact Bayer-v1 student", "Packed RGGB · batched RGB reconstruction · 29,980 parameters", "#eef3ff", "#2056ed")
 box(960, 944, 715, 90, "Bayer hybrid", "Relative variance / brightness tile rank · blend Classical + Learned", "#f7f8fa", "#7384a0")
 
 arrow([(330, 596), (330, 635), (465, 635), (465, 666)], "#2056ed")

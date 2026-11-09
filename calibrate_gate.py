@@ -32,13 +32,17 @@ def main():
     samples = []
     for source, target in pairs(Path(a.data)):
         m, t = read_pair(source, target)
-        samples.append((source.name, *center_crop(m, t, a.patch_size)))
+        m,t=center_crop(m,t,a.patch_size)
+        classical=app.classical_bayer(m,'human',1)
+        learned,_=app.learned(m,hybrid=False)
+        samples.append((source.name,m,t,classical,learned))
     if not samples: raise ValueError('Calibration split is empty')
     results = []
     for fraction in [1.0, .95, .9, .85, .8, .75, .7, .6, .5, .4, .2, 0.0]:
         scores, rates = [], []
-        for _, mosaic, target in samples:
-            output, routed = app.learned(mosaic, hybrid=True, route_fraction=fraction)
+        for _, mosaic, target, classical, learned in samples:
+            output, routed = app.blend_bayer_paths(classical,learned,mosaic,
+                gate_config={'mode':'relative_rank','route_fraction':fraction})
             predicted = np.asarray(output, dtype=np.float32) / 255
             reference = np.asarray(Image.fromarray(np.uint8(np.clip(target, 0, 1) * 255), 'RGB'), dtype=np.float32) / 255
             mse = float(np.mean((predicted - reference) ** 2))
@@ -52,7 +56,7 @@ def main():
     best = min(eligible, key=lambda r: (r['mean_routed_percent'], -r['mean_psnr_db']))
     report = {**best, 'mode': 'relative_rank', 'checkpoint': str(Path(a.checkpoint).resolve()),
               'dataset': str(Path(a.data).resolve()), 'patch_size': a.patch_size,
-              'criterion': 'Minimize neural tiles while keeping calibration mean PSNR within budget of all-neural hybrid routing. Tiles are ranked by Bayer variance / (mean intensity squared + 1e-6).',
+              'criterion': 'Minimize selected neural tiles while keeping calibration mean PSNR within budget of the fully Learned output. Hybrid output composes selected Learned regions with the Classical output. Tiles are ranked by Bayer variance / (mean intensity squared + 1e-6).',
               'max_psnr_drop_db': a.max_psnr_drop, 'baseline_psnr_db': baseline,
               'warning': 'Calibration is scene-disjoint from training but quality/speed are not guaranteed on unseen scenes; routed tile percentage is not measured MAC reduction.',
               'candidates': results}

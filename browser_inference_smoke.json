@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-08",
+  "scope": "local browser-side smoke check; not a mobile benchmark or independent test set",
+  "browser": "ChatGPT in-app browser on the development workstation; exact engine and device specification not captured",
+  "production_url": "https://mod-isp-workbench.vercel.app/",
+  "production_assets_http_status": {
+    "html": 200,
+    "onnx_model": 200,
+    "wasm_runtime": 200,
+    "model_notice": 200,
+    "model_license": 200
+  },
+  "network_boundary": "the local static-server log showed GETs for site/model/WASM assets and no image POST; the production deployment is static and has no upload API or image POST in the page script",
+  "model": "SIDD-CC sRGB NAFNet ONNX, 256x256 fixed tiles",
+  "results": [
+    {
+      "input": "generated synthetic RGB JPEG",
+      "input_size": [384, 256],
+      "output_size": [384, 256],
+      "tiles": 2,
+      "learned_inference_ms": 723,
+      "end_to_end_ms": 750,
+      "hybrid_selected_tile_percent": 50,
+      "metrics": null,
+      "note": "first browser session use; included runtime/model initialization in the learned timing"
+    },
+    {
+      "input": "generated synthetic gradient-plus-noise RGB JPEG",
+      "input_size": [1024, 683],
+      "output_size": [1024, 683],
+      "tiles": 15,
+      "learned_inference_ms": 1533,
+      "end_to_end_ms": 1637,
+      "hybrid_selected_tile_percent": 53,
+      "metrics": null,
+      "note": "runtime/model warm; no aligned reference available"
+    },
+    {
+      "input": "generated synthetic RGB JPEG on the production alias",
+      "input_size": [384, 256],
+      "output_size": [384, 256],
+      "tiles": 2,
+      "learned_inference_ms": 1394,
+      "end_to_end_ms": 1420,
+      "hybrid_selected_tile_percent": 50,
+      "metrics": null,
+      "note": "first model use in this production browser session; includes asset initialization; workstation browser, not phone"
+    }
+  ],
+  "checks": {
+    "classical_learned_hybrid_tabs": "passed",
+    "reference_metrics_hidden_for_unpaired_upload": "passed",
+    "restore_fixed_benchmark_and_metrics": "passed",
+    "unsupported_file_error": "passed",
+    "production_phone_sized_viewport": {
+      "width": 390,
+      "document_width": 390,
+      "horizontal_overflow": false
+    },
+    "local_flask_root": "browser RGB page rendered; local-only RAW workbench link visible",
+    "local_raw_bayer_workbench_route": "/workbench returned HTTP 200 and loaded the Bayer/RAW console"
+  }
+}

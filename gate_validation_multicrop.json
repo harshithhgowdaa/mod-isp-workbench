@@ -1,0 +1,666 @@
+{
+  "gate": {
+    "route_fraction": 1.0,
+    "mean_psnr_db": 22.45267782407485,
+    "mean_routed_percent": 100.0,
+    "mode": "relative_rank",
+    "checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/mod_isp.pt",
+    "dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/calibration",
+    "patch_size": 256,
+    "criterion": "Minimize selected neural tiles while keeping calibration mean PSNR within budget of the fully Learned output. Hybrid output composes selected Learned regions with the Classical output. Tiles are ranked by Bayer variance / (mean intensity squared + 1e-6).",
+    "max_psnr_drop_db": 0.5,
+    "baseline_psnr_db": 22.45267782407485,
+    "warning": "Calibration is scene-disjoint from training but quality/speed are not guaranteed on unseen scenes; routed tile percentage is not measured MAC reduction.",
+    "candidates": [
+      {
+        "route_fraction": 1.0,
+        "mean_psnr_db": 22.45267782407485,
+        "mean_routed_percent": 100.0
+      },
+      {
+        "route_fraction": 0.95,
+        "mean_psnr_db": 19.749627146426317,
+        "mean_routed_percent": 96.0
+      },
+      {
+        "route_fraction": 0.9,
+        "mean_psnr_db": 18.13773038390707,
+        "mean_routed_percent": 92.0
+      },
+      {
+        "route_fraction": 0.85,
+        "mean_psnr_db": 17.29905410126758,
+        "mean_routed_percent": 88.0
+      },
+      {
+        "route_fraction": 0.8,
+        "mean_psnr_db": 16.13363446586107,
+        "mean_routed_percent": 80.0
+      },
+      {
+        "route_fraction": 0.75,
+        "mean_psnr_db": 15.726946098201873,
+        "mean_routed_percent": 76.0
+      },
+      {
+        "route_fraction": 0.7,
+        "mean_psnr_db": 15.34842911015038,
+        "mean_routed_percent": 72.0
+      },
+      {
+        "route_fraction": 0.6,
+        "mean_psnr_db": 14.761773520518929,
+        "mean_routed_percent": 60.0
+      },
+      {
+        "route_fraction": 0.5,
+        "mean_psnr_db": 14.441704223555003,
+        "mean_routed_percent": 52.0
+      },
+      {
+        "route_fraction": 0.4,
+        "mean_psnr_db": 14.269023410020518,
+        "mean_routed_percent": 40.0
+      },
+      {
+        "route_fraction": 0.2,
+        "mean_psnr_db": 14.218435844845848,
+        "mean_routed_percent": 20.0
+      },
+      {
+        "route_fraction": 0.0,
+        "mean_psnr_db": 14.2346288802983,
+        "mean_routed_percent": 0.0
+      }
+    ]
+  },
+  "dataset": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/data/siddcc_bayer/validation",
+  "checkpoint": "/Users/harshithgowda/Documents/Codex/2026-11-07/i-w/outputs/mod-isp/models/mod_isp.pt",
+  "environment": "macOS-15.7.7-arm64-arm-64bit",
+  "patch_size": 256,
+  "repeats": 3,
+  "timing": "Median warm local wall time; not mobile latency or measured MAC reduction.",
+  "rows": [
+    {
+      "image": "0001_NOISY_RAW_034.MAT",
+      "all_neural": {
+        "psnr_db": 27.24104402442757,
+        "ssim": 0.9219194054603577,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.58649998297915
+      },
+      "calibrated": {
+        "psnr_db": 27.24104402442757,
+        "ssim": 0.9219194054603577,
+        "routed_percent": 100.0,
+        "latency_median_ms": 42.49291698215529
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0001_NOISY_RAW_145.MAT",
+      "all_neural": {
+        "psnr_db": 27.366331178071853,
+        "ssim": 0.924243688583374,
+        "routed_percent": 100.0,
+        "latency_median_ms": 46.012000006157905
+      },
+      "calibrated": {
+        "psnr_db": 27.366331178071853,
+        "ssim": 0.924243688583374,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.449583002366126
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0002_NOISY_RAW_014.MAT",
+      "all_neural": {
+        "psnr_db": 24.5561221225878,
+        "ssim": 0.8726817965507507,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.85604098672047
+      },
+      "calibrated": {
+        "psnr_db": 24.5561221225878,
+        "ssim": 0.8726817965507507,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.15120798209682
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0002_NOISY_RAW_023.MAT",
+      "all_neural": {
+        "psnr_db": 24.524102537526204,
+        "ssim": 0.8692843317985535,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.70195804303512
+      },
+      "calibrated": {
+        "psnr_db": 24.524102537526204,
+        "ssim": 0.8692843317985535,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.88366598263383
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0003_NOISY_RAW_060.MAT",
+      "all_neural": {
+        "psnr_db": 21.512304064609197,
+        "ssim": 0.7189552187919617,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.4131250414066
+      },
+      "calibrated": {
+        "psnr_db": 21.512304064609197,
+        "ssim": 0.7189552187919617,
+        "routed_percent": 100.0,
+        "latency_median_ms": 44.606167008168995
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0003_NOISY_RAW_139.MAT",
+      "all_neural": {
+        "psnr_db": 21.509579121807818,
+        "ssim": 0.7172395586967468,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.2247910220176
+      },
+      "calibrated": {
+        "psnr_db": 21.509579121807818,
+        "ssim": 0.7172395586967468,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.74112503603101
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0004_NOISY_RAW_060.MAT",
+      "all_neural": {
+        "psnr_db": 26.45631065194411,
+        "ssim": 0.9082651138305664,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.56520801736042
+      },
+      "calibrated": {
+        "psnr_db": 26.45631065194411,
+        "ssim": 0.9082651138305664,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.88416697597131
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0004_NOISY_RAW_077.MAT",
+      "all_neural": {
+        "psnr_db": 26.47659831522786,
+        "ssim": 0.9101522564888,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.726458033546805
+      },
+      "calibrated": {
+        "psnr_db": 26.47659831522786,
+        "ssim": 0.9101522564888,
+        "routed_percent": 100.0,
+        "latency_median_ms": 44.14895799709484
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0005_NOISY_RAW_065.MAT",
+      "all_neural": {
+        "psnr_db": 23.29593533273976,
+        "ssim": 0.8111781477928162,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.4315409664996
+      },
+      "calibrated": {
+        "psnr_db": 23.29593533273976,
+        "ssim": 0.8111781477928162,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.10054203355685
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0005_NOISY_RAW_091.MAT",
+      "all_neural": {
+        "psnr_db": 23.497916555991267,
+        "ssim": 0.8196344375610352,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.423416970763355
+      },
+      "calibrated": {
+        "psnr_db": 23.497916555991267,
+        "ssim": 0.8196344375610352,
+        "routed_percent": 100.0,
+        "latency_median_ms": 46.15862504579127
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0006_NOISY_RAW_020.MAT",
+      "all_neural": {
+        "psnr_db": 18.14978957688265,
+        "ssim": 0.6985751986503601,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.73891599709168
+      },
+      "calibrated": {
+        "psnr_db": 18.14978957688265,
+        "ssim": 0.6985751986503601,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.71212498983368
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0006_NOISY_RAW_146.MAT",
+      "all_neural": {
+        "psnr_db": 18.092647849378007,
+        "ssim": 0.6986066699028015,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.687708982266486
+      },
+      "calibrated": {
+        "psnr_db": 18.092647849378007,
+        "ssim": 0.6986066699028015,
+        "routed_percent": 100.0,
+        "latency_median_ms": 46.09979200176895
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0008_NOISY_RAW_058.MAT",
+      "all_neural": {
+        "psnr_db": 23.39166761778351,
+        "ssim": 0.8478723168373108,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.602665985934436
+      },
+      "calibrated": {
+        "psnr_db": 23.39166761778351,
+        "ssim": 0.8478723168373108,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.12687502615154
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0008_NOISY_RAW_094.MAT",
+      "all_neural": {
+        "psnr_db": 23.37040762613498,
+        "ssim": 0.8480455279350281,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.0336669976823
+      },
+      "calibrated": {
+        "psnr_db": 23.37040762613498,
+        "ssim": 0.8480455279350281,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.364250036887825
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0010_NOISY_RAW_008.MAT",
+      "all_neural": {
+        "psnr_db": 23.951281466496106,
+        "ssim": 0.8119660019874573,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.09970802348107
+      },
+      "calibrated": {
+        "psnr_db": 23.951281466496106,
+        "ssim": 0.8119660019874573,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.83520804671571
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0010_NOISY_RAW_146.MAT",
+      "all_neural": {
+        "psnr_db": 24.030336339080524,
+        "ssim": 0.8076310753822327,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.47520801983774
+      },
+      "calibrated": {
+        "psnr_db": 24.030336339080524,
+        "ssim": 0.8076310753822327,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.69012500764802
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0012_NOISY_RAW_068.MAT",
+      "all_neural": {
+        "psnr_db": 23.467706524023733,
+        "ssim": 0.8230375647544861,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.09654101356864
+      },
+      "calibrated": {
+        "psnr_db": 23.467706524023733,
+        "ssim": 0.8230375647544861,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.71033301949501
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0012_NOISY_RAW_121.MAT",
+      "all_neural": {
+        "psnr_db": 23.426279824186665,
+        "ssim": 0.824445903301239,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.71195795992389
+      },
+      "calibrated": {
+        "psnr_db": 23.426279824186665,
+        "ssim": 0.824445903301239,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.56000002473593
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0017_NOISY_RAW_106.MAT",
+      "all_neural": {
+        "psnr_db": 21.973308810377596,
+        "ssim": 0.7469742298126221,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.01125001581386
+      },
+      "calibrated": {
+        "psnr_db": 21.973308810377596,
+        "ssim": 0.7469742298126221,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.98120801569894
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0017_NOISY_RAW_133.MAT",
+      "all_neural": {
+        "psnr_db": 21.98125511982251,
+        "ssim": 0.7471925616264343,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.90570800146088
+      },
+      "calibrated": {
+        "psnr_db": 21.98125511982251,
+        "ssim": 0.7471925616264343,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.53075003484264
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0018_NOISY_RAW_031.MAT",
+      "all_neural": {
+        "psnr_db": 27.05664761905816,
+        "ssim": 0.8970387578010559,
+        "routed_percent": 100.0,
+        "latency_median_ms": 52.316500048618764
+      },
+      "calibrated": {
+        "psnr_db": 27.05664761905816,
+        "ssim": 0.8970387578010559,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.5903750048019
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0018_NOISY_RAW_046.MAT",
+      "all_neural": {
+        "psnr_db": 27.05040509023615,
+        "ssim": 0.8977226614952087,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.723457989282906
+      },
+      "calibrated": {
+        "psnr_db": 27.05040509023615,
+        "ssim": 0.8977226614952087,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.3387909848243
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0019_NOISY_RAW_011.MAT",
+      "all_neural": {
+        "psnr_db": 25.765263226904903,
+        "ssim": 0.876875102519989,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.21979198884219
+      },
+      "calibrated": {
+        "psnr_db": 25.765263226904903,
+        "ssim": 0.876875102519989,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.73437498463318
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0019_NOISY_RAW_133.MAT",
+      "all_neural": {
+        "psnr_db": 25.768030975057606,
+        "ssim": 0.8802881240844727,
+        "routed_percent": 100.0,
+        "latency_median_ms": 61.42733397427946
+      },
+      "calibrated": {
+        "psnr_db": 25.768030975057606,
+        "ssim": 0.8802881240844727,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.25670903362334
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0022_NOISY_RAW_035.MAT",
+      "all_neural": {
+        "psnr_db": 23.027635737041802,
+        "ssim": 0.7963947653770447,
+        "routed_percent": 100.0,
+        "latency_median_ms": 53.166290977969766
+      },
+      "calibrated": {
+        "psnr_db": 23.027635737041802,
+        "ssim": 0.7963947653770447,
+        "routed_percent": 100.0,
+        "latency_median_ms": 57.436375005636364
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0022_NOISY_RAW_062.MAT",
+      "all_neural": {
+        "psnr_db": 23.063303772273834,
+        "ssim": 0.7971281409263611,
+        "routed_percent": 100.0,
+        "latency_median_ms": 52.07666696514934
+      },
+      "calibrated": {
+        "psnr_db": 23.063303772273834,
+        "ssim": 0.7971281409263611,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.53154101874679
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0025_NOISY_RAW_003.MAT",
+      "all_neural": {
+        "psnr_db": 24.13614603417251,
+        "ssim": 0.8940188884735107,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.674415960907936
+      },
+      "calibrated": {
+        "psnr_db": 24.13614603417251,
+        "ssim": 0.8940188884735107,
+        "routed_percent": 100.0,
+        "latency_median_ms": 46.390292001888156
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0025_NOISY_RAW_096.MAT",
+      "all_neural": {
+        "psnr_db": 24.22380281277387,
+        "ssim": 0.8890569806098938,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.447250017896295
+      },
+      "calibrated": {
+        "psnr_db": 24.22380281277387,
+        "ssim": 0.8890569806098938,
+        "routed_percent": 100.0,
+        "latency_median_ms": 46.793249959591776
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0028_NOISY_RAW_028.MAT",
+      "all_neural": {
+        "psnr_db": 23.373054713695534,
+        "ssim": 0.8802962899208069,
+        "routed_percent": 100.0,
+        "latency_median_ms": 52.11462499573827
+      },
+      "calibrated": {
+        "psnr_db": 23.373054713695534,
+        "ssim": 0.8802962899208069,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.52129197772592
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0028_NOISY_RAW_033.MAT",
+      "all_neural": {
+        "psnr_db": 23.379812054823482,
+        "ssim": 0.8806576132774353,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.26987498765811
+      },
+      "calibrated": {
+        "psnr_db": 23.379812054823482,
+        "ssim": 0.8806576132774353,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.3745829812251
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0030_NOISY_RAW_074.MAT",
+      "all_neural": {
+        "psnr_db": 21.294878412241456,
+        "ssim": 0.7973671555519104,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.571333966217935
+      },
+      "calibrated": {
+        "psnr_db": 21.294878412241456,
+        "ssim": 0.7973671555519104,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.33154197735712
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0030_NOISY_RAW_138.MAT",
+      "all_neural": {
+        "psnr_db": 21.290336831134482,
+        "ssim": 0.7971797585487366,
+        "routed_percent": 100.0,
+        "latency_median_ms": 52.5784160126932
+      },
+      "calibrated": {
+        "psnr_db": 21.290336831134482,
+        "ssim": 0.7971797585487366,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.73695800779387
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0032_NOISY_RAW_019.MAT",
+      "all_neural": {
+        "psnr_db": 24.085189762261013,
+        "ssim": 0.8990426659584045,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.66900001838803
+      },
+      "calibrated": {
+        "psnr_db": 24.085189762261013,
+        "ssim": 0.8990426659584045,
+        "routed_percent": 100.0,
+        "latency_median_ms": 52.17833298956975
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0032_NOISY_RAW_054.MAT",
+      "all_neural": {
+        "psnr_db": 24.086251898896144,
+        "ssim": 0.8992366194725037,
+        "routed_percent": 100.0,
+        "latency_median_ms": 53.51749999681488
+      },
+      "calibrated": {
+        "psnr_db": 24.086251898896144,
+        "ssim": 0.8992366194725037,
+        "routed_percent": 100.0,
+        "latency_median_ms": 47.907042026054114
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0033_NOISY_RAW_042.MAT",
+      "all_neural": {
+        "psnr_db": 25.590188500515417,
+        "ssim": 0.909426748752594,
+        "routed_percent": 100.0,
+        "latency_median_ms": 51.0682089952752
+      },
+      "calibrated": {
+        "psnr_db": 25.590188500515417,
+        "ssim": 0.909426748752594,
+        "routed_percent": 100.0,
+        "latency_median_ms": 49.73166697891429
+      },
+      "quality_change_db": 0.0
+    },
+    {
+      "image": "0033_NOISY_RAW_146.MAT",
+      "all_neural": {
+        "psnr_db": 25.804935123273513,
+        "ssim": 0.8959874510765076,
+        "routed_percent": 100.0,
+        "latency_median_ms": 50.08837499190122
+      },
+      "calibrated": {
+        "psnr_db": 25.804935123273513,
+        "ssim": 0.8959874510765076,
+        "routed_percent": 100.0,
+        "latency_median_ms": 48.402124957647175
+      },
+      "quality_change_db": 0.0
+    }
+  ],
+  "mean_psnr_change_db": 0.0,
+  "worst_psnr_change_db": 0.0,
+  "mean_routed_percent": 100.0,
+  "mean_latency_all_ms": 50.450928109866155,
+  "mean_latency_calibrated_ms": 48.541190948324385
+}

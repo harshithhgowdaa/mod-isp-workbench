@@ -67,6 +67,30 @@ def sample_crop(noisy: np.ndarray, clean: np.ndarray, size: int, rng: random.Ran
     return np.ascontiguousarray(a.transpose(2, 0, 1)), np.ascontiguousarray(b.transpose(2, 0, 1))
 
 
+def augment_exposure_noise(x: torch.Tensor, probability: float = 0.75) -> torch.Tensor:
+    """Simulate lower exposure plus shot/read noise on sRGB training patches.
+
+    Targets remain the original aligned clean images. This is deliberately a
+    synthetic robustness augmentation, not a physical camera noise model.
+    """
+    if probability <= 0:
+        return x
+    batch = x.shape[0]
+    apply = (torch.rand(batch, 1, 1, 1, device=x.device) < probability)
+    exposure = torch.empty(batch, 1, 1, 1, device=x.device).uniform_(0.35, 1.0)
+    shot_level = torch.empty(batch, 1, 1, 1, device=x.device).uniform_(0.00002, 0.00030)
+    read_level = torch.empty(batch, 1, 1, 1, device=x.device).uniform_(0.0001, 0.0015)
+    linear = torch.where(x <= 0.04045, x / 12.92,
+                         ((x + 0.055) / 1.055).clamp_min(0).pow(2.4))
+    signal = linear * exposure
+    degraded = signal + torch.randn_like(signal) * torch.sqrt(signal.clamp_min(0) * shot_level)
+    degraded = degraded + torch.randn_like(signal) * read_level
+    degraded = degraded.clamp(0, 1)
+    srgb = torch.where(degraded <= 0.0031308, 12.92 * degraded,
+                       1.055 * degraded.clamp_min(0).pow(1 / 2.4) - 0.055)
+    return torch.where(apply, srgb, x).clamp(0, 1)
+
+
 def infer_patch(model, arr: np.ndarray, device):
     x = torch.from_numpy(np.ascontiguousarray(arr.transpose(2, 0, 1))).unsqueeze(0).to(device)
     with torch.no_grad():
@@ -144,6 +168,11 @@ def main():
     p.add_argument("--lr", type=float, default=1e-4)
     p.add_argument("--seed", type=int, default=2026)
     p.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
+    p.add_argument("--resume", type=Path,
+                   help="Continue fine-tuning a saved NAFNet checkpoint rather than the generic-lite initialization")
+    p.add_argument("--augment-exposure-noise", action="store_true",
+                   help="Apply synthetic lower-exposure and shot/read noise augmentation to training inputs")
+    p.add_argument("--augmentation-probability", type=float, default=0.75)
     args = p.parse_args()
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     device = torch.device("mps" if args.device == "auto" and torch.backends.mps.is_available() else ("cpu" if args.device == "auto" else args.device))
@@ -153,9 +182,17 @@ def main():
     val_scenes = set(scenes[:max(1, round(0.1 * len(scenes)))])
     train_pairs = [x for x in pairs if x[0] not in val_scenes]
     val_pairs = [x for x in pairs if x[0] in val_scenes]
+    if not 0 <= args.augmentation_probability <= 1:
+        p.error("--augmentation-probability must be between 0 and 1")
     model, cfg = import_naf(args.samsung_repo)
-    state = torch.load(args.init, map_location="cpu", weights_only=True)
-    model.load_state_dict(state, strict=True)
+    if args.resume:
+        state = torch.load(args.resume, map_location="cpu", weights_only=True)
+        if state.get("config") != cfg:
+            p.error("Resume checkpoint architecture does not match the Samsung NAFNet configuration")
+        model.load_state_dict(state["state_dict"], strict=True)
+    else:
+        state = torch.load(args.init, map_location="cpu", weights_only=True)
+        model.load_state_dict(state, strict=True)
     model.to(device)
     baseline = validate(model, val_pairs, device)
     baseline_benchmark = benchmark(model, args.dataset, device)
@@ -174,6 +211,8 @@ def main():
             for _, noisy_path, gt_path in order[start:start+args.batch_size]:
                 x,y=sample_crop(read_rgb(noisy_path),read_rgb(gt_path),args.patch,sample_rng);xs.append(x);ys.append(y)
             x=torch.from_numpy(np.stack(xs)).to(device); y=torch.from_numpy(np.stack(ys)).to(device)
+            if args.augment_exposure_noise:
+                x = augment_exposure_noise(x, args.augmentation_probability)
             optimizer.zero_grad(set_to_none=True); pred=model(x); loss=F.l1_loss(pred,y);loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.01);optimizer.step();losses.append(float(loss.detach().cpu()))
         val=validate(model,val_pairs,device)
@@ -185,12 +224,17 @@ def main():
     if best_state is not None:
         model.load_state_dict(best_state)
     report={"task":"SIDD-CC SRGB image denoising adaptation of Samsung Modular Neural ISP generic-lite NAFNet",
-      "dataset":"MhdMohammadi/SIDD-CC SRGB train; 115 training-split scenes, 2 captures each",
+      "dataset":"MhdMohammadi/SIDD-CC SRGB train; 230 pairs from 115 scene instances across 10 physical scenes",
       "split_unit":"physical SIDD scene number (second token in scene-instance directory name)",
       "train_pairs":len(train_pairs),"train_scene_groups":sorted({x[0] for x in train_pairs}),"train_scene_instances":train_instances,
       "validation_pairs":len(val_pairs),"validation_scene_groups":sorted(val_scenes),"validation_scene_instances":validation_instances,
       "random_seed":args.seed,"device":str(device),"epochs":args.epochs,"best_epoch":best_epoch,"batch_size":args.batch_size,"patch":args.patch,"learning_rate":args.lr,
-      "initial_checkpoint":str(args.init),"model_config":cfg,"parameters":sum(x.numel() for x in model.parameters()),
+      "initial_checkpoint":str(args.resume or args.init),
+      "training_augmentation":{"enabled":args.augment_exposure_noise,
+          "name":"synthetic lower-exposure plus shot/read noise" if args.augment_exposure_noise else None,
+          "probability":args.augmentation_probability if args.augment_exposure_noise else 0.0,
+          "noise_model":"linear-domain signal-dependent Gaussian plus read noise; synthetic only" if args.augment_exposure_noise else None},
+      "model_config":cfg,"parameters":sum(x.numel() for x in model.parameters()),
       "baseline_validation":baseline,"final_validation":validate(model,val_pairs,device),"training_history":history,
       "elapsed_seconds":time.time()-started,"note":"sRGB-domain adaptation only; not raw-RGB Bayer ISP processing. SIDD-CC benchmark test blocks are evaluated separately and were not used in training."}
     report["initial_checkpoint_benchmark_test"] = baseline_benchmark

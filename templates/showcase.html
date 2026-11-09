@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="MOD-ISP workbench: compare classical, learned, and hybrid restoration on a held-out benchmark or a local image.">
+  <title>MOD-ISP · Image restoration workbench</title>
+  <link rel="stylesheet" href="/static/showcase.css">
+  <link rel="stylesheet" href="/static/showcase-readable.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="MOD-ISP"><span class="brand-mark">M</span><span>MOD<span class="brand-dash">—</span>ISP</span></a>
+    <nav aria-label="Project links"><a class="active" href="#evidence">Demo</a><a href="#results">Results</a><a href="#runtime">Run locally</a></nav>
+    <a class="source-link" href="https://github.com/harshithhgowdaa/mod-isp-workbench">Source repository <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div class="intro-copy">
+        <h1 id="title">Three ISP paths.<br><span>One image.</span></h1>
+        <p class="lede">A direct comparison of classical enhancement, a trained restoration model, and their hybrid output.</p>
+      </div>
+      <aside id="run-context" class="run-context" aria-label="Demo context">
+        <span class="context-label">COMPUTER VISION HACKATHON 2026 · PROBLEM P2</span>
+        <strong id="context-title">SIDD-CC sRGB test</strong>
+        <span id="context-detail">Scene 0164 · block 1 of 928</span>
+        <span id="context-size">Aligned 256 × 256 crop</span>
+      </aside>
+    </section>
+
+    <section id="try-image" class="try-image" aria-labelledby="try-title">
+      <div class="section-head">
+        <div><h2 id="try-title">Try an image</h2></div>
+        <p>Runs in this browser · file stays on your device</p>
+      </div>
+      <div class="try-controls">
+        <label class="file-picker" for="image-file">
+          <span>Choose JPEG, PNG or WebP</span>
+          <input id="image-file" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <button id="process-image" class="action-button" type="button" disabled>Process image</button>
+        <button id="restore-demo" class="text-button" type="button">Restore benchmark example</button>
+      </div>
+      <p id="browser-status" class="browser-status" role="status" aria-live="polite">RGB images up to 30 MB. For this public demo, images are reduced to a 1024 px long edge. Camera RAW and Bayer inputs run in the local app.</p>
+    </section>
+
+    <section id="evidence" class="evidence" aria-labelledby="comparison-title">
+      <div class="section-head">
+        <div><h2 id="comparison-title">Compare the outputs</h2></div>
+        <p id="comparison-context">Fixed held-out test example · rendered sRGB denoising</p>
+      </div>
+      <div class="path-tabs" role="tablist" aria-label="Select output path">
+        <button id="path-classical" type="button" role="tab" aria-controls="output-panel" aria-selected="false" tabindex="-1" data-path="classical">Classical</button>
+        <button id="path-learned" type="button" role="tab" aria-controls="output-panel" aria-selected="true" tabindex="0" data-path="learned">Learned</button>
+        <button id="path-hybrid" type="button" role="tab" aria-controls="output-panel" aria-selected="false" tabindex="-1" data-path="hybrid">Hybrid</button>
+        <button id="path-reference" type="button" role="tab" aria-controls="output-panel" aria-selected="false" tabindex="-1" data-path="reference">Reference</button>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span>INPUT</span><span id="input-subtitle">Noisy sRGB</span></figcaption>
+          <img id="input-image" src="/static/showcase/input.jpg" width="256" height="256" alt="Noisy 256 by 256 SIDD-CC test image">
+        </figure>
+        <figure id="output-panel" class="output-figure" role="tabpanel" tabindex="0" aria-labelledby="path-learned">
+          <figcaption><span id="output-name">LEARNED OUTPUT</span><span id="output-subtitle">SIDD-CC sRGB denoiser · tone finish</span></figcaption>
+          <img id="output-image" src="/static/showcase/learned.jpg" width="256" height="256" alt="Learned restoration output">
+        </figure>
+      </div>
+      <div class="measurement-row" aria-live="polite">
+        <div><span>PSNR</span><strong id="metric-psnr">—</strong><small>dB</small></div>
+        <div><span>SSIM</span><strong id="metric-ssim">—</strong></div>
+        <div><span>DELTA E 2000</span><strong id="metric-delta-e">—</strong></div>
+        <div><span>LPIPS</span><strong id="metric-lpips">—</strong></div>
+        <p id="metric-scope">Scores are computed against the aligned reference for this one block.</p>
+      </div>
+      <p id="integrity-note" class="integrity-note"><strong>Scope:</strong> these are measurements for one held-out block after the workbench finishing path. They are not the 928-block benchmark average. Hybrid reuses Learned predictions for this RGB comparison and does not claim compute savings.</p>
+    </section>
+
+    <section id="results" class="results" aria-labelledby="results-title">
+      <div class="section-head">
+        <div><h2 id="results-title">Benchmark context</h2></div>
+        <p>Separate aggregate denoising evaluation</p>
+      </div>
+      <div class="benchmark-line">
+        <div><strong>33.755 <small>dB</small></strong><span>PSNR · 928 SIDD-CC sRGB test blocks</span></div>
+        <div><strong>0.7757</strong><span>SSIM · same aggregate evaluation</span></div>
+        <p>This aggregate is for the trained sRGB denoiser. It is not a Bayer RAW score, nor a score for the single three-path example above.</p>
+      </div>
+    </section>
+
+    <section id="runtime" class="runtime" aria-labelledby="runtime-title">
+      <div class="section-head">
+        <div><h2 id="runtime-title">Camera RAW and Bayer input</h2></div>
+        <p>Uploads stay on your machine</p>
+      </div>
+      <div class="runtime-row">
+        <p>The browser demo accepts rendered RGB. Camera RAW and normalized Bayer NPY are processed by the local Python workbench.</p>
+        <a id="local-console-link" class="run-link" href="/workbench" hidden>Open local RAW workbench <span aria-hidden="true">↗</span></a>
+        <a id="setup-link" class="run-link" href="https://github.com/harshithhgowdaa/mod-isp-workbench#quick-start">Open setup instructions <span aria-hidden="true">↗</span></a>
+        <code>./run_local.sh</code>
+      </div>
+    </section>
+  </main>
+  <footer><span>MOD-ISP · EXPERIMENTAL RESEARCH PROTOTYPE</span><span><a href="/static/showcase/MODEL-NOTICE.md">Model &amp; runtime notice</a> · <a href="/static/showcase/MODEL-LICENSE.md">Model license</a> · <a href="https://abdokamel.github.io/sidd/">SIDD ↗</a> · <a href="https://github.com/harshithhgowdaa/mod-isp-workbench">Source ↗</a></span></footer>
+  <script src="/static/vendor/ort/ort.wasm.min.js" defer></script>
+  <script src="/static/showcase.js" defer></script>
+</body>
+</html>

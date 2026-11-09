@@ -1,0 +1,5 @@
+# Browser model notice
+
+The browser restoration model is a fixed-tile ONNX export of this project's fine-tuned Samsung NAFNet sRGB checkpoint (`models/sidd_srgb_nafnet_lite.pt`). It was initialized from SamsungLabs Modular Neural ISP's `denoising/models/generic_lite.pth`, then fine-tuned on SIDD-CC. The model architecture and adapted weights are distributed under the upstream CC BY-NC-SA 4.0 license; see [MODEL-LICENSE.md](MODEL-LICENSE.md) and the [SamsungLabs Modular Neural ISP repository](https://github.com/SamsungLabs/modular_neural_isp).
+
+The model runs in the visitor's browser using ONNX Runtime Web 1.31.1 (MIT; see `../vendor/ort/LICENSE`). Uploaded image pixels are not sent to the website. Inputs are sRGB JPEG, PNG, or WebP only and are resized to a maximum 1024 px long edge. Bayer RAW processing is available only in the local Python workbench. The Hybrid tab is a spatial blend after learned inference and does not save compute. Quality metrics require an aligned reference and are not calculated for arbitrary uploads.

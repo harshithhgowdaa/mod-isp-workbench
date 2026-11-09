@@ -1,0 +1,45 @@
+{
+  "input": "/Users/harshithgowda/Downloads/jaswinder-singh-RHEFn56zx1w-unsplash.jpg",
+  "input_bytes": 1372999,
+  "sha256": "1a6745cefc095bdaf447d9b7eb7baaf0f020fa8eafe6af564181afd3d7a18c3b",
+  "http_status": 200,
+  "total_request_seconds": 18.401,
+  "dimensions": [
+    4898,
+    3264
+  ],
+  "input_type": "rgb",
+  "camera_managed_raw": false,
+  "raw_integrity": null,
+  "processing_note": "Rendered sRGB \u2192 SIDD-CC sRGB denoiser",
+  "model": {
+    "available": true,
+    "best_epoch": 10,
+    "dataset": "SIDD-CC SRGB",
+    "message": "SIDD-CC sRGB denoiser available",
+    "parameters": 245223,
+    "size_kb": 1135.9
+  },
+  "environment": "Darwin arm64 \u00b7 Python 3.12.14",
+  "outputs": {
+    "classical": {
+      "latency_ms": 3143.5,
+      "memory_mb_python_allocations": 1265.46,
+      "routed_percent": null,
+      "has_reference_metrics": false
+    },
+    "hybrid": {
+      "latency_ms": 1946.3,
+      "memory_mb_python_allocations": 1028.81,
+      "routed_percent": 50.0,
+      "has_reference_metrics": false
+    },
+    "learned": {
+      "latency_ms": 11938.7,
+      "memory_mb_python_allocations": 1509.41,
+      "routed_percent": null,
+      "has_reference_metrics": false
+    }
+  },
+  "response_bytes": 15057580
+}

@@ -31,23 +31,41 @@ class ExportModel(tf.Module):
         return {'rgb':rgb+color}
 module=ExportModel();concrete=module.__call__.get_concrete_function()
 files=pairs(Path(args.calibration_data))
+representative_samples=0
+representative_pairs=0
+representative_min=float('inf')
+representative_max=float('-inf')
 def representative():
-    count=0
-    for src,tgt in files:
+    global representative_samples,representative_pairs,representative_min,representative_max
+    samples=[]
+    base,remainder=divmod(256,len(files))
+    for index,(src,tgt) in enumerate(files):
         m,_=read_pair(src,tgt);h,w=m.shape
-        for y in range(0,h-tile+1,tile):
-            for x in range(0,w-tile+1,tile):
-                sample=pack(m[y:y+tile,x:x+tile])[None].astype(np.float32)
-                # Calibrate for exposure changes using training tiles only, including full sensor range.
-                for gain in (1.0, 2.0, 4.0, 8.0, 16.0):
-                    yield [np.clip(sample*gain,0,1)];count+=1
-                    if count>=100:return
-    if not count: raise ValueError('Calibration pairs must contain an image at least as large as tile')
+        ys=list(range(0,h-tile+1,tile));xs=list(range(0,w-tile+1,tile))
+        total=len(ys)*len(xs)
+        if not total: continue
+        budget=base+(index<remainder)
+        positions=np.linspace(0,total-1,min(budget,total),dtype=np.int64)
+        for position in positions:
+            iy,ix=divmod(int(position),len(xs));y,x=ys[iy],xs[ix]
+            sample=pack(m[y:y+tile,x:x+tile])[None].astype(np.float32)
+            # SIDD-CC RAW is black-subtracted and intentionally unclipped;
+            # after AsShotNeutral WB, legitimate values can be <0 or >1.
+            # Sample uniformly across captures and image positions, preserving
+            # the actual range rather than calibrating on adjacent dark tiles.
+            samples.append(sample)
+            representative_min=min(representative_min,float(sample.min()))
+            representative_max=max(representative_max,float(sample.max()))
+        representative_pairs+=1
+    if not samples: raise ValueError('Calibration pairs must contain an image at least as large as tile')
+    representative_samples=len(samples)
+    for sample in samples: yield [sample]
 converter=tf.lite.TFLiteConverter.from_concrete_functions([concrete],module);converter.optimizations=[tf.lite.Optimize.DEFAULT];converter.representative_dataset=representative;converter.target_spec.supported_ops=[tf.lite.OpsSet.TFLITE_BUILTINS_INT8];converter.inference_input_type=tf.int8;converter.inference_output_type=tf.int8
 result=converter.convert();Path(args.out).parent.mkdir(parents=True,exist_ok=True);Path(args.out).write_bytes(result)
 # Verify tensor quantization and compare the converted model against the actual PyTorch checkpoint.
-interp=tf.lite.Interpreter(model_content=result);interp.allocate_tensors();ind=interp.get_input_details()[0];outd=interp.get_output_details()[0];sample=next(representative())[0]
+interp=tf.lite.Interpreter(model_content=result);interp.allocate_tensors();ind=interp.get_input_details()[0];outd=interp.get_output_details()[0]
+first_m,_=read_pair(*files[0]);sample=pack(first_m[:tile,:tile])[None].astype(np.float32)
 scale,zero=ind['quantization'];quant=np.clip(np.round(sample/scale+zero),-128,127).astype(np.int8);interp.set_tensor(ind['index'],quant);interp.invoke();out=interp.get_tensor(outd['index']);oscale,ozero=outd['quantization'];out=(out.astype(np.float32)-ozero)*oscale
 with torch.no_grad(): expected=model(torch.from_numpy(sample.transpose(0,3,1,2))).numpy().transpose(0,2,3,1)
-report={'checkpoint':str(args.checkpoint),'calibration_data':str(args.calibration_data),'tile':tile,'bytes':len(result),'input_quantization':[float(scale),int(zero)],'output_quantization':[float(oscale),int(ozero)],'max_abs_error':float(np.max(np.abs(expected-out))),'mean_abs_error':float(np.mean(np.abs(expected-out))),'checkpoint_metadata':meta}
+report={'checkpoint':str(args.checkpoint),'calibration_data':str(args.calibration_data),'tile':tile,'representative_samples':representative_samples,'representative_pairs':representative_pairs,'representative_min':representative_min,'representative_max':representative_max,'representative_range_note':'Spatially distributed tiles from all calibration captures; actual Bayer values after metadata AsShotNeutral white balance, with sub-black noise and headroom retained.','sample_input_min':float(sample.min()),'sample_input_max':float(sample.max()),'bytes':len(result),'input_quantization':[float(scale),int(zero)],'output_quantization':[float(oscale),int(ozero)],'max_abs_error':float(np.max(np.abs(expected-out))),'mean_abs_error':float(np.mean(np.abs(expected-out))),'checkpoint_metadata':meta}
 Path(args.out+'.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
